@@ -8,6 +8,17 @@ const pageNotFound = (req,res)=>{
     }
 }
 
+const loadSignupPage = (req,res)=>{
+
+    try{
+        res.render("user/signup");
+    } catch(err) {
+        console.log("Signup page not loading:",err)
+        res.status(500).send("Server Error")
+    }
+
+
+}
 
 
 
@@ -24,4 +35,4 @@ try{
 }
 
 
-module.exports = { loadHomepage,pageNotFound }
+module.exports = { loadHomepage,pageNotFound,loadSignupPage  }
