@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 
 const userSchema = mongoose.Schema({
-    name:{
+    fullName:{
         type:String,
         required:true
     },
@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
     },
     password:{
         type:String,
-        required:false
+        
     },
     isBlocked:{
         type:Boolean,
@@ -51,10 +51,12 @@ const userSchema = mongoose.Schema({
         default:Date.now
     },
     referalCode:{
-        type:String
+        type:String,
+        //required:true
     },
     redeemed:{
-        type:Boolean
+        type:Boolean,
+        //required:true
     },
     redeemedUsers:[{
         type: mongoose.Schema.Types.ObjectId,
