@@ -132,6 +132,11 @@ button:hover {
     border-radius: 8px;
     object-fit: cover;
 }
+.error-message{
+    color:red;
+    font-size: 0.75rem;
+    
+}
 
     </style>
 </head>
@@ -142,35 +147,40 @@ button:hover {
         <!-- Left side: Form -->
         <div class="form-container">
             <h2>Create Account</h2>
-            <form action="/signup" method="POST">
+            <form id="signform" action="/signup" method="POST">
                 <!-- Full Name -->
                 <div class="form-group">
                     <label for="full-name">Full Name</label>
-                    <input type="text" id="full-name" name="fullName" required>
+                    <input type="text" id="fullname" name="fullName" >
+                    <div id="error1" class="error-message"></div>
                 </div>
                 
                 <!-- Email Address -->
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="text" id="email" name="email" >
+                    <div id="error2" class="error-message"></div>
                 </div>
 
                 <!-- Phone Number -->
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
                     <input type="number" id="phone" name="phone" required>
+                    <div id="error3" class="error-message"></div>
                 </div>
 
                 <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
+                    <div id="error4" class="error-message"></div>
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" name="confirmPassword" required>
+                    <input type="password" id="confirmpassword" name="confirmPassword" required>
+                    <div id="error5" class="error-message"></div>
                 </div>
 
                 <!-- Sign Up Button -->
@@ -201,3 +211,109 @@ button:hover {
 </body>
 
 </html>
+
+
+
+
+<script>
+
+const fullnameid = document.getElementById("fullname");
+const emailid = document.getElementById("email");
+const phoneid = document.getElementById("phone");
+const passwordid = document.getElementById("password");
+const confirmpasswordid = document.getElementById("confirmpassword");
+const signform = document.getElementById("signform");
+
+const error1 = document.getElementById("error1");
+const error2 = document.getElementById("error2");
+const error3 = document.getElementById("error3");
+const error4 = document.getElementById("error4");
+const error5 = document.getElementById("error5");
+
+function nameValidateChecking() {
+    const fullnameVal = fullnameid.value;
+    const namePattern = /^[A-Za-z\s]+$/;
+
+    if (fullnameVal.trim() === "") {
+        error1.style.display = "block";
+        error1.innerHTML = "Please enter a valid name";
+    } else if (!namePattern.test(fullnameVal)) {
+        error1.style.display = "block";
+        error1.innerHTML = "Name can only contain alphabets and spaces";
+    } else {
+        error1.style.display = "none";
+        error1.innerHTML = "";
+    }
+}
+
+function emailValidateChecking() {
+    const emailVal = emailid.value;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (!emailPattern.test(emailVal)) {
+        error2.style.display = "block";
+        error2.innerHTML = "Invalid Email Format";
+    } else {
+        error2.style.display = "none";
+        error2.innerHTML = "";
+    }
+}
+
+function phoneValidateChecking() {
+    const phoneVal = phoneid.value;
+    if (phoneVal.trim() === "") {
+        error3.style.display = "block";
+        error3.innerHTML = "Enter a valid Phone number";
+    } else if (phoneVal.length < 10 || phoneVal.length > 10) {
+        error3.style.display = "block";
+        error3.innerHTML = "Phone number should be 10 digits";
+    } else {
+        error3.style.display = "none";
+        error3.innerHTML = "";
+    }
+}
+
+function passwordValidateChecking() {
+    const passwordVal = passwordid.value;
+    const confirmPasswordVal = confirmpasswordid.value;
+    const alpha = /[a-zA-Z]/;
+    const digit = /\d/;
+
+    if (passwordVal.length < 8) {
+        error4.style.display = "block";
+        error4.innerHTML = "Password should contain at least 8 characters";
+    } else if (!alpha.test(passwordVal) || !digit.test(passwordVal)) {
+        error4.style.display = "block";
+        error4.innerHTML = "Password should contain both numbers and letters";
+    } else {
+        error4.style.display = "none";
+        error4.innerHTML = "";
+    }
+
+    if (passwordVal !== confirmPasswordVal) {
+        error5.style.display = "block";
+        error5.innerHTML = "Passwords do not match";
+    } else {
+        error5.style.display = "none";
+        error5.innerHTML = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    signform.addEventListener("submit", function(e) {
+        // Validate all fields before submitting
+        nameValidateChecking();
+        emailValidateChecking();
+        phoneValidateChecking();
+        passwordValidateChecking();
+
+        // Check if there are any errors
+        if (error1.innerHTML || error2.innerHTML || error3.innerHTML || error4.innerHTML || error5.innerHTML) {
+            e.preventDefault();  // Prevent form submission if errors exist
+        }
+    });
+});
+
+
+</script>
+
