@@ -5,6 +5,7 @@ const session = require("express-session")
 const swal = require("sweetalert")
 const { connectDB } = require('./config/db')
 const  userRouter  = require('./routes/userRouter')
+const adminRouter = require("./routes/adminRouter")
 const passport = require("./config/passport")
 
 
@@ -45,6 +46,7 @@ app.use(express.static('public'))
 
 
 app.use('/',userRouter)
+app.use("/admin",adminRouter)
 
 
 
