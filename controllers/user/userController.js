@@ -173,11 +173,20 @@ const verifyOtp = async (req,res)=>{
     }
 
 
-const loadHomepage = (req,res)=>{
+const loadHomepage = async (req,res)=>{
 
 try{
+    const user = req.session.user
+    console.log(user)
+    if(user){
+        const userData = await User.findOne({_id:user})
+        console.log("iam amal :",userData)
+        return res.render("user/home",{user:userData})
+    }else {
+       return res.render("user/home",{user:null})
+    }
 
-    res.render('user/home')
+   // res.render('user/home')
 } catch (err){
     console.log("Home page not found")
     res.status(500).send("server Error")
@@ -203,9 +212,9 @@ const login = async (req,res)=>{
 
     try{
         const { email,password } = req.body
-        console.log(password)
+       // console.log(password)
         const findUser = await User.findOne({isAdmin:0,email:email})
-        console.log(findUser)
+        //console.log(findUser)
 
         if(!findUser){
             return res.render("user/login",{message:"User not found....!!!"})
@@ -231,4 +240,22 @@ const login = async (req,res)=>{
 }
 
 
-module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login  }
+const logOut = (req,res)=>{
+    try {
+        
+        req.session.destroy((err)=>{
+            if(err){
+                console.log("Session Destruction Error",err.message)
+                return res.redirect("/pageNotFound")
+            }
+            return res.redirect("/login")
+        })
+    } catch (error) {
+        console.log("Logout error",error)
+        res.redirect("/pageNotFound")
+        
+    }
+}
+
+
+module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut  }
