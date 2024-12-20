@@ -5,6 +5,7 @@ const session = require("express-session")
 const swal = require("sweetalert")
 const { connectDB } = require('./config/db')
 const  userRouter  = require('./routes/userRouter')
+const passport = require("./config/passport")
 
 
 
@@ -26,6 +27,12 @@ app.use(session({
         maxAge:72*60*60*1000
     }
 }))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+
+
 app.use((req,res,next)=>{
     res.set('cache-control','no-store')
     next()

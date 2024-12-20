@@ -86,8 +86,8 @@ const signup = async (req,res)=>{
        }
        req.session.userOtp = otp
        req.session.userData = { email,password,fullName,phone }
-       const man = await User.find({ googleId: null });
-       console.log(man)
+       //const man = await User.find({ googleId: null });
+       //console.log(man)
 
 
        res.render("user/otp-verification")
@@ -186,4 +186,49 @@ try{
 }
 
 
-module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp  }
+const loadLoginPage = (req,res)=>{
+    try{
+        if(!req.session.user){
+            res.render("user/login")
+        }else {
+            res.redirect("/")
+        }
+    } catch(err){
+        res.redirect("user/pageNotFound")
+    }
+}
+
+
+const login = async (req,res)=>{
+
+    try{
+        const { email,password } = req.body
+        console.log(password)
+        const findUser = await User.findOne({isAdmin:0,email:email})
+        console.log(findUser)
+
+        if(!findUser){
+            return res.render("user/login",{message:"User not found....!!!"})
+        }
+        if(findUser.isBlocked){
+            return res.render("user/login",{message:"User is Blocked by Admin"})
+        }
+        const passwordMatch = await bcrypt.compare(password,findUser.password)
+
+        if(!passwordMatch){
+            return res.render("user/login",{message:"Incorrect Password"})
+        }
+
+        req.session.user = findUser._id
+        res.redirect("/")
+
+
+    } catch (err){
+        console.error("login error :",err)
+        res.render("user/login",{message: "Log in failed . Please try again later"})
+
+    }
+}
+
+
+module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login  }
