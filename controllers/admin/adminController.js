@@ -62,4 +62,20 @@ const pageerror = (req,res)=>{
     res.render("admin/page-error")
 }
 
-module.exports = { loadLogin,login,loadDashBoard,pageerror }
+const logout = (req,res)=>{
+    try {
+        
+        req.session.destroy(err =>{
+            if(err){
+                console.log("Error destroying session",err)
+                return res.redirect("/pageerror")
+            } 
+            return res.redirect("/admin/login")
+        })
+    } catch (error) {
+        console.log("Unexpected error during Logout",err)
+        return res.redirect("/pageerror")
+    }
+}
+
+module.exports = { loadLogin,login,loadDashBoard,pageerror,logout }

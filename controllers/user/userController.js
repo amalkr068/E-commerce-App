@@ -177,10 +177,10 @@ const loadHomepage = async (req,res)=>{
 
 try{
     const user = req.session.user
-    console.log(user)
+    //console.log(user)
     if(user){
         const userData = await User.findOne({_id:user})
-        console.log("iam amal :",userData)
+       // console.log("iam amal :",userData)
         return res.render("user/home",{user:userData})
     }else {
        return res.render("user/home",{user:null})
