@@ -20,7 +20,7 @@ const login = async (req,res)=>{
     try {
         const { email,password } = req.body
         const admin = await User.findOne({isAdmin:true,email})
-        console.log(admin)
+       // console.log(admin)
 
         if(admin){
             const passwordMatch = await bcrypt.compare(password,admin.password)
@@ -29,10 +29,10 @@ const login = async (req,res)=>{
                 req.session.admin = true;
                 return res.redirect("/admin")
             }else {
-                return res.redirect("/login")
+                return res.redirect("/admin/login")
             }
         }else {
-            return res.redirect("/login")
+            return res.redirect("/admin/login")
         }
         
 
@@ -51,6 +51,8 @@ const loadDashBoard = (req,res)=>{
     try {
         if(req.session.admin){
             return res.render("admin/dashboard")
+        } else{
+            return res.redirect("/admin/login")
         }
 
     } catch (error) {

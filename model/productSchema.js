@@ -1,6 +1,6 @@
 const { Schema } = require("mongoose")
 
-const mongoose = required("mongoose")
+const mongoose = require("mongoose")
 
 const productSchema = mongoose.Schema({
     productName:{

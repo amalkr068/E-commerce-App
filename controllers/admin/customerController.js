@@ -23,7 +23,7 @@ const customerInfo = async(req,res)=>{
         .limit(limit*1)
         .skip((page-1)*limit)
         .exec()
-        console.log(userData)
+        //console.log(userData)
 
         const count = await User.find({
             isAdmin: false,
