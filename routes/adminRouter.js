@@ -4,6 +4,7 @@ const { loadLogin,login,loadDashBoard,pageerror,logout } = require("../controlle
 const { customerInfo,customerBlocked,customerUnblocked } = require("../controllers/admin/customerController")
 const { categoryInfo,addCategory,addCategoryOffer,removeCategoryOffer,getListCategory,getUnListCategory,getEditCategory,editCategory } =  require("../controllers/admin/categoryController")
 const { getBrandPage,addBrand,blockBrand,unBlockBrand,deleteBrand } = require("../controllers/admin/brandController")
+const { getProductAddPage} = require("../controllers/admin/productController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -41,6 +42,10 @@ router.post("/addBrand",uploads.single("image"),addBrand)
 router.get("/blockBrand",blockBrand)
 router.get("/unBlockBrand",unBlockBrand)
 router.get("/deleteBrand",deleteBrand)
+
+
+//Product Management
+router.get("/addProducts",getProductAddPage)
 
 router.get("/pageerror",pageerror)
 
