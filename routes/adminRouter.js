@@ -3,7 +3,16 @@ const router = express.Router()
 const { loadLogin,login,loadDashBoard,pageerror,logout } = require("../controllers/admin/adminController")
 const { customerInfo,customerBlocked,customerUnblocked } = require("../controllers/admin/customerController")
 const { categoryInfo,addCategory,addCategoryOffer,removeCategoryOffer,getListCategory,getUnListCategory,getEditCategory,editCategory } =  require("../controllers/admin/categoryController")
+const {getBrandPage} = require("../controllers/admin/brandController")
 const { adminAuth } = require("../middlewares/auth")
+const multer = require("multer")
+const storage = require("../helpers/multer")
+const uploads = multer({storage:storage})
+
+
+
+
+
 
 // Log in Management
 router.get("/login",loadLogin)
@@ -25,6 +34,9 @@ router.get("/listCategory",getListCategory)
 router.get("/unlistCategory",getUnListCategory)
 router.get("/editCategory",getEditCategory)
 router.post("/editCategory/:id",editCategory)
+
+//Brand Management
+router.get("/brands",getBrandPage)
 
 router.get("/pageerror",pageerror)
 
