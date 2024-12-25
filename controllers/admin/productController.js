@@ -88,7 +88,7 @@ const getAllProducts = async (req,res)=>{
             ],
         }).limit(limit*1).skip((page-1)*limit).populate('category')
 
-
+console.log(productData)
         const count = await Product.find({
             $or:[
                 {productName:{$regex: new RegExp(".*"+search+".*","i")}},
@@ -100,8 +100,8 @@ const getAllProducts = async (req,res)=>{
 
         const category = await Category.find({isListed:true})
         const brand = await Brand.find({isBlocked:false})
-        console.log("Category is :",category)
-        console.log("Brand is :",brand)
+        //console.log("Category is :",category)
+        //console.log("Brand is :",brand)
 
 
         if(category && brand){
@@ -123,8 +123,47 @@ const getAllProducts = async (req,res)=>{
 }
 
 
+const addProductOffer = async (req,res)=>{
+    try {
+        const {productId,percentage} = req.body
+        const findProduct = await Product.findOne({_id:productId})
+        const findCategory = await Category.findOne({_id:findProduct.category})
+        if(findCategory.categoryOffer > percentage){
+            return res.json({status:false,message:"This products Category already has a category offer"})
+        }
+        findProduct.salePrice = findProduct.salePrice - Math.floor(findProduct.regularPrice*(percentage/100))
+        findProduct.productOffer = parseInt(percentage)
+        await findProduct.save()
+        findCategory.categoryOffer = 0
+        await findCategory.save()
+        res.json({status:true})
 
-module.exports = { getProductAddPage,addProducts,getAllProducts }
+
+
+    } catch (error) {
+        res.redirect("/pageerror")
+        res.status(500).json({status:false,message:"Internal Server Error"})
+    }
+}
+
+
+const removeProductOffer = async (req,res)=>{
+    try {
+        const {productId} = req.body
+        const findProduct = await Product.findOne({_id:productId})
+        const percentage = findProduct.productOffer
+        findProduct.salePrice = findProduct.salePrice+Math.floor(findProduct.regularPrice*(percentage/100))
+        findProduct.productOffer = 0;
+        await findProduct.save()
+        res.json({status:true})
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+
+module.exports = { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer }
 
 
 
