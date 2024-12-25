@@ -162,8 +162,29 @@ const removeProductOffer = async (req,res)=>{
 }
 
 
+const blockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id
+        await Product.updateOne({_id:id},{$set:{isBlocked:true}})
+        res.redirect("/admin/products")
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
 
-module.exports = { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer }
+
+const unblockProduct = async(req,res)=>{
+    try {
+        let id = req.query.id
+        await Product.updateOne({_id:id},{$set:{isBlocked:false}})
+        res.redirect("/admin/products")
+    } catch (error) {
+        res.redirect("/pageerror")
+    }
+}
+
+
+module.exports = { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct }
 
 
 
