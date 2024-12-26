@@ -1,4 +1,6 @@
 const User = require("../../model/userSchema")
+const Product = require("../../model/productSchema")
+const Category = require("../../model/categorySchema")
 const nodeMailer = require("nodemailer")
 const bcrypt = require("bcrypt")
 
@@ -177,13 +179,21 @@ const loadHomepage = async (req,res)=>{
 
 try{
     const user = req.session.user
+    const categories = await Category.find({isListed:true})
+    let productData = await Product.find({
+        isBlocked:false,
+        category:{$in:categories.map(category=>category._id)},quantity:{$gt:0}
+    })
+
+    productData.sort((a,b)=> new Date(b.createdOn) - new Date(a.createdOn))
+    productData = productData.slice(0,4)
     //console.log(user)
     if(user){
         const userData = await User.findOne({_id:user})
        // console.log("iam amal :",userData)
-        return res.render("user/home",{user:userData})
+        return res.render("user/home",{user:userData , products:productData})
     }else {
-       return res.render("user/home",{user:null})
+       return res.render("user/home",{user:null , products:productData})
     }
 
    // res.render('user/home')
