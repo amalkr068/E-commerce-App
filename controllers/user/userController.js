@@ -1,6 +1,7 @@
 const User = require("../../model/userSchema")
 const Product = require("../../model/productSchema")
 const Category = require("../../model/categorySchema")
+const Banner = require("../../model/bannerSchema")
 const nodeMailer = require("nodemailer")
 const bcrypt = require("bcrypt")
 
@@ -178,6 +179,11 @@ const verifyOtp = async (req,res)=>{
 const loadHomepage = async (req,res)=>{
 
 try{
+    const today = new Date().toISOString()
+    const findBanner = await Banner.find({
+        startDate:{$lt:new Date(today)},
+        endDate:{$gt:new Date(today)}
+    })
     const user = req.session.user
     const categories = await Category.find({isListed:true})
     let productData = await Product.find({
@@ -191,9 +197,9 @@ try{
     if(user){
         const userData = await User.findOne({_id:user})
        // console.log("iam amal :",userData)
-        return res.render("user/home",{user:userData , products:productData})
+        return res.render("user/home",{user:userData , products:productData,banner:findBanner || []})
     }else {
-       return res.render("user/home",{user:null , products:productData})
+       return res.render("user/home",{user:null , products:productData,banner:findBanner || []})
     }
 
    // res.render('user/home')

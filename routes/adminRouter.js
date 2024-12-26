@@ -5,6 +5,7 @@ const { customerInfo,customerBlocked,customerUnblocked } = require("../controlle
 const { categoryInfo,addCategory,addCategoryOffer,removeCategoryOffer,getListCategory,getUnListCategory,getEditCategory,editCategory } =  require("../controllers/admin/categoryController")
 const { getBrandPage,addBrand,blockBrand,unBlockBrand,deleteBrand } = require("../controllers/admin/brandController")
 const { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct,getEditProduct,editProduct,deleteSingleImage } = require("../controllers/admin/productController")
+const { getBannerPage,getAddBannerPage,addBanner,deleteBanner } = require("../controllers/admin/bannerController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -55,6 +56,13 @@ router.get("/unblockProduct",unblockProduct)
 router.get("/editProduct",getEditProduct)
 router.post("/editProduct/:id",uploads.array("images",4),editProduct)
 router.post("/deleteImage",deleteSingleImage)
+
+//Banner Management
+router.get("/banner",getBannerPage)
+router.get("/addBanner",getAddBannerPage)
+router.post("/addBanner",uploads.single("images"),addBanner)
+router.get("/deleteBanner",deleteBanner)
+
 
 
 
