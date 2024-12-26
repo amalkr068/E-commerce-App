@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const passport = require('passport')
 const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut } = require("../controllers/user/userController")
-const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword } = require("../controllers/user/profileController")
+const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp } = require("../controllers/user/profileController")
 
 
 //Error Management
@@ -36,6 +36,14 @@ router.post("/verify-passwordForgot-otp",verifyForgotPasswordOtp)
 router.get("/reset-password",getResetPasswordPage)
 router.post("/resend-forgot-otp",resendOtp1)
 router.post("/reset-password",postNewPassword)
+router.get("/userProfile",userProfile)
+router.get("/change-email",changeEmail)
+router.post("/change-email",changeEmailValid)
+router.post("/verify-email-otp",verifyEmailOtp)
+router.post("/update-email",updateEmail)
+router.get("/change-password",changePassword)
+router.post("/change-password",changePasswordValid)
+router.post("/verify-changepassword-otp",verifyChangePasswordOtp)
 
 
 module.exports = router;
