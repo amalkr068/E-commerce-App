@@ -4,7 +4,7 @@ const { loadLogin,login,loadDashBoard,pageerror,logout } = require("../controlle
 const { customerInfo,customerBlocked,customerUnblocked } = require("../controllers/admin/customerController")
 const { categoryInfo,addCategory,addCategoryOffer,removeCategoryOffer,getListCategory,getUnListCategory,getEditCategory,editCategory } =  require("../controllers/admin/categoryController")
 const { getBrandPage,addBrand,blockBrand,unBlockBrand,deleteBrand } = require("../controllers/admin/brandController")
-const { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct } = require("../controllers/admin/productController")
+const { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct,getEditProduct,editProduct,deleteSingleImage } = require("../controllers/admin/productController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -52,6 +52,9 @@ router.post("/addProductOffer",addProductOffer)
 router.post("/removeProductOffer",removeProductOffer)
 router.get("/blockProduct",blockProduct)
 router.get("/unblockProduct",unblockProduct)
+router.get("/editProduct",getEditProduct)
+router.post("/editProduct/:id",uploads.array("images",4),editProduct)
+router.post("/deleteImage",deleteSingleImage)
 
 
 
