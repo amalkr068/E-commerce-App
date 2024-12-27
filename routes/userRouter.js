@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const passport = require('passport')
-const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut } = require("../controllers/user/userController")
+const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
 const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress } = require("../controllers/user/profileController")
 
 
@@ -28,6 +28,10 @@ router.post("/login",login)
 //Home page & shopping page
 router.get("/", loadHomepage)
 router.get("/logout",logOut)
+router.get("/shop",loadShoppingPage)
+router.get("/filter",filterProduct)
+router.get("/filterPrice",filterByPrice)
+router.post("/search",searchProducts)
 
 //Profile Management
 router.get("/forgot-password",getForgotPasswordPage)
