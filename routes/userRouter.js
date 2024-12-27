@@ -3,7 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
 const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress } = require("../controllers/user/profileController")
-
+const {productDetails} = require("../controllers/user/productController")
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -56,6 +56,10 @@ router.post("/addAddress",postAddAddress)
 router.get("/editAddress",editAddress)
 router.post("/editAddress",postEditAddress)
 router.get("/deleteAddress",deleteAddress)
+
+
+//Product Management
+router.get("/productDetails",productDetails)
 
 
 module.exports = router;
