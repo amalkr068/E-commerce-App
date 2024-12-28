@@ -4,6 +4,7 @@ const passport = require('passport')
 const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
 const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress } = require("../controllers/user/profileController")
 const {productDetails} = require("../controllers/user/productController")
+const { loadwishlist,addToWishlist,removeProduct } = require("../controllers/user/wishlistController")
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -60,6 +61,12 @@ router.get("/deleteAddress",deleteAddress)
 
 //Product Management
 router.get("/productDetails",productDetails)
+
+
+//Wishlist Management
+router.get("/wishlist",loadwishlist)
+router.post("/addToWishlist",addToWishlist)
+router.get("/removeFromWishlist",removeProduct)
 
 
 module.exports = router;

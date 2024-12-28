@@ -78,7 +78,12 @@ const userSchema = mongoose.Schema({
             type:Date,
             default:Date.now
         }
-    }]
+    }],
+    wishlist: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Product',
+        default: []  // Ensures the wishlist is an empty array by default
+    }
 
 })
 
