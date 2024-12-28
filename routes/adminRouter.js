@@ -6,6 +6,7 @@ const { categoryInfo,addCategory,addCategoryOffer,removeCategoryOffer,getListCat
 const { getBrandPage,addBrand,blockBrand,unBlockBrand,deleteBrand } = require("../controllers/admin/brandController")
 const { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProductOffer,blockProduct,unblockProduct,getEditProduct,editProduct,deleteSingleImage } = require("../controllers/admin/productController")
 const { getBannerPage,getAddBannerPage,addBanner,deleteBanner } = require("../controllers/admin/bannerController")
+const { loadCoupon,createCoupon,editCoupon,updateCoupon,deleteCoupon } = require("../controllers/admin/couponController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -63,7 +64,12 @@ router.get("/addBanner",getAddBannerPage)
 router.post("/addBanner",uploads.single("images"),addBanner)
 router.get("/deleteBanner",deleteBanner)
 
-
+//Coupon Management
+router.get("/coupon",loadCoupon)
+router.post("/createCoupon",createCoupon)
+router.get("/editCoupon",editCoupon)
+router.post("/updatecoupon",updateCoupon)
+router.get("/deletecoupon",deleteCoupon)
 
 
 router.get("/pageerror",pageerror)
