@@ -16,7 +16,7 @@ const customerInfo = async(req,res)=>{
         const userData = await User.find({
             isAdmin: false,
             $or : [
-                { name: { $regex: ".*"+search+".*"}},
+                { fullName: { $regex: ".*"+search+".*"}},
                 { email: { $regex: ".*"+search+".*"}}
             ]
         })

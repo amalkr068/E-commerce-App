@@ -21,7 +21,8 @@ const productDetails = async (req,res)=>{
             product:product,
             quantity:product.quantity,
             totalOffer:totalOffer,
-            category:findCategory
+            category:findCategory,
+            totalQuantity:req.session.totalQuantity
 
         })
 

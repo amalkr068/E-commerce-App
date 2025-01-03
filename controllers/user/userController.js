@@ -198,9 +198,9 @@ try{
     if(user){
         const userData = await User.findOne({_id:user})
        // console.log("iam amal :",userData)
-        return res.render("user/home",{user:userData , products:productData,banner:findBanner || []})
+        return res.render("user/home",{user:userData , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0})
     }else {
-       return res.render("user/home",{user:null , products:productData,banner:findBanner || []})
+       return res.render("user/home",{user:null , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0})
     }
 
    // res.render('user/home')
@@ -309,7 +309,8 @@ const loadShoppingPage = async(req,res)=>{
             brand:brands,
             totalProducts:totalProducts,
             currentPage:page,
-            totalPages:totalPages
+            totalPages:totalPages,
+            totalQuantity:req.session.totalQuantity
         })
     } catch (error) {
         res.redirect("/pageNotFound")
@@ -374,7 +375,8 @@ const filterProduct = async (req,res)=>{
             totalPages,
             currentPage,
             selectedCategory:category || null,
-            selectedBrand:brand || null
+            selectedBrand:brand || null,
+            totalQuantity:req.session.totalQuantity
            })
 
     } catch (error) {
@@ -412,7 +414,8 @@ const filterByPrice = async (req,res)=>{
             category:categories,
             brand:brands,
             totalPages,
-            currentPage
+            currentPage,
+            totalQuantity:req.session.totalQuantity
         })
 
 
@@ -466,7 +469,8 @@ const searchProducts = async (req,res)=>{
             brand:brands,
             totalPages,
             currentPage,
-            count:searchResult.length
+            count:searchResult.length,
+            totalQuantity:req.session.totalQuantity
         })
 
 

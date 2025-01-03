@@ -32,6 +32,17 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+/*app.use(async (req, res, next) => {
+    if (req.session.user) {
+        const cart = await Cart.findOne({ userId: req.session.user });
+        let totalQuantity = 0;
+        if (cart && cart.items) {
+            totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
+        }
+        res.locals.totalQuantity = totalQuantity;  // Pass totalQuantity globally to all views
+    }
+    next();
+});*/
 
 
 app.use((req,res,next)=>{

@@ -282,7 +282,7 @@
              <p>Brand:<%=products[i].brand%></p>
              <p>Price:₹<%= products[i].salePrice ? products[i].salePrice.toLocaleString('en-IN') : 'N/A' %><span class="text-muted"><strike>₹<%= products[i].regularPrice ? products[i].regularPrice.toLocaleString('en-IN') : 'N/A' %></strike></span></p>
            </a>
-           <button class="add-to-cart-btn" onclick="">Add to Cart</button>
+           <button class="add-to-cart-btn" onclick="addToCart('<%=products[i]._id%>')">Add to Cart</button>
          </div>
          <%}%>
      </main>
@@ -346,5 +346,58 @@
       }
     })
   }
+
+
+  function addToCart(productId){
+
+$.ajax({
+  url:'/addToCart',
+  method:'POST',
+  data:{productId:productId},
+  success:(response)=>{
+    //alert(response)
+    if(response.status){
+      
+      if(response.message == "Product quantity updated in Cart"){
+        Swal.fire({
+        title:"Updated to Cart",
+        text:'The product has been Increased by 1 to your Cart',
+       //text:response.cartLength,
+        icon:'success',
+        timer:2000
+      })
+      }else{
+        Swal.fire({
+        title:"Added to Cart",
+        text:'The product has been added to your Cart',
+       //text:response.cartLength,
+        icon:'success',
+        timer:2000
+      })
+      }
+      
+    }else {
+      Swal.fire({
+        title:"Already in Cart",
+        text:response.message,
+        icon:'info',
+        timer:2000
+      })
+    }  if(response.cartLength) {
+      req.session.cartLength = response.cartLength
+    }
+  },
+  error:(error)=>{
+    Swal.fire({
+      title:'Error',
+      text:"There was an error adding the product to your cart",
+      icon:'error',
+      timer:2000
+    })
+  }
+})
+}
+
+
 </script>
 

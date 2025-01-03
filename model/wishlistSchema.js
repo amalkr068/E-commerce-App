@@ -5,19 +5,16 @@ const wishlistSchema = mongoose.Schema({
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"User",
-        required:true
+        required:true,
+        unique:true
     },
-    products: [{
-        productId :{
+    productId :[{
             type: mongoose.Schema.Types.ObjectId,
             ref:"Product",
             required:true
-        },
-        addedOn: {
-            type: Date,
-            default: Date.now
-        }
-    }]
+        }]
+       
+
     
 })
 

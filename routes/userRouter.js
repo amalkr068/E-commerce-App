@@ -4,7 +4,9 @@ const passport = require('passport')
 const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
 const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress } = require("../controllers/user/profileController")
 const {productDetails} = require("../controllers/user/productController")
-const { loadwishlist,addToWishlist,removeProduct } = require("../controllers/user/wishlistController")
+const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
+const { getCartPage,addToCart,changeQuantity,deleteProduct } = require("../controllers/user/cartController")
+const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts } = require("../controllers/user/checkoutController")
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -66,7 +68,23 @@ router.get("/productDetails",productDetails)
 //Wishlist Management
 router.get("/wishlist",loadwishlist)
 router.post("/addToWishlist",addToWishlist)
-router.get("/removeFromWishlist",removeProduct)
+router.get("/removeFromWishlist",removeFromWishlist)
+
+
+//Cart Management
+router.get("/cart",getCartPage)
+router.post("/addToCart",addToCart)
+router.post("/changeQuantity",changeQuantity)
+router.get("/deleteItem",deleteProduct)
+
+//Checkout Management
+router.get("/checkout",getCheckoutPage)
+router.post("/place-order",placeOrder)
+router.get("/order-confirmation",orderConfirmation)
+router.post("/order-confirmation",orderConfirmation)
+router.post("/verify-payment",verifyPayment)
+router.get("/view-order-list",viewOrderList)
+router.get("/view-orderedproducts",viewOrderedProducts)
 
 
 module.exports = router;

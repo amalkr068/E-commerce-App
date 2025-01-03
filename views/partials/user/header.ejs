@@ -113,7 +113,11 @@
                        <a href="/login" class="sign-in-link">Log in</a>
                        <%}%>
                        <a href="/wishlist"><img src="img/icon/heart.png" alt=""></a>
-                       <a href="/cart"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
+                      <%if(totalQuantity>0){%>
+                       <a href="/cart"><img src="img/icon/cart.png" alt=""> <span class="badge badge-warning"><%=totalQuantity%></span></a>
+                       <%}else{%>
+                        <a href="/cart"><img src="img/icon/cart.png" alt=""> <span class="badge badge-warning">0</span></a>
+                        <%}%>
                    </div>
                </div>
            </div>

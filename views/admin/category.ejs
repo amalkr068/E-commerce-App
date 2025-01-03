@@ -129,7 +129,7 @@
                     <td class="text-start"><%=category.description%></td>
                     <td>
                         <% if(category.categoryOffer){%>
-                            <%=category.categoryOffer%>
+                            <%=category.categoryOffer%>%
                             <%}else{%>
                             0%
                             <%}%>
@@ -234,12 +234,12 @@
         icon: 'success', 
         title: 'Category Created!',
         text: 'Your category has been successfully created.',
-        timer: 3000,  // THIS LINE IS OK
-        showConfirmButton: false,  // THIS LINE IS OK
+        timer: 3000,  
+        showConfirmButton: false,  
         willClose: () => {
-            location.reload();  // THIS IS OK
-        }  // <-- Check this closing brace here
-    });  // <-- Ensure this closing parenthesis and curly brace are present here
+            location.reload();  
+        }  
+    });  
 })
 .catch(error => {
     console.error("Error:", error);
