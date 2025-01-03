@@ -1,3 +1,5 @@
+<!--
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,5 +136,177 @@ body {
       <button class="checkout-button">Checkout</button>
     </div>
   </div>
+</body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Manage Orders</title>
+
+  <!-- Bootstrap 4/5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 50px;
+      text-transform: uppercase;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    /* Order Card Styling */
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .order-actions button {
+      font-size: 1rem;
+      padding: 10px;
+      margin: 5px;
+      width: 100px;
+      border-radius: 5px;
+      transition: 0.3s ease;
+    }
+
+    .order-actions button:hover {
+      opacity: 0.9;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+
+    .btn-warning {
+      background-color: #f0ad4e;
+      border-color: #f0ad4e;
+      color: white;
+    }
+
+    .btn-danger {
+      background-color: #d9534f;
+      border-color: #d9534f;
+      color: white;
+    }
+
+    .tracker-btn {
+      font-size: 1rem;
+      padding: 10px;
+      border-radius: 5px;
+      width: 100%;
+      margin: 5px 0;
+      transition: 0.3s ease;
+    }
+
+    .btn-track {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: white;
+    }
+
+    .btn-track:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Admin - Manage Orders</h1>
+
+  <div class="container">
+    <!-- Admin Panel for Orders -->
+    <div class="row">
+      <% for (let i = 0; i < orders.length; i++) { %>
+        <!-- Order Card -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Order #<%= orders[i].orderId %></h5>
+              <p class="card-text"><strong>Customer:</strong> <%= orders[i].customerName %></p>
+              <p class="card-text"><strong>Items:</strong> <%= orders[i].itemsCount %></p>
+              <p class="card-text"><strong>Total Amount:</strong> ₹<%= orders[i].totalAmount %></p>
+              
+              <!-- Order Tracking Buttons -->
+              <div class="order-actions">
+                <button class="btn btn-track" onclick="updateStatus('<%= orders[i].orderId %>', 'Placed')">Order Placed</button>
+                <button class="btn btn-track" onclick="updateStatus('<%= orders[i].orderId %>', 'Packed')">Packed</button>
+                <button class="btn btn-track" onclick="updateStatus('<%= orders[i].orderId %>', 'Shipping')">Shipping</button>
+                <button class="btn btn-track" onclick="updateStatus('<%= orders[i].orderId %>', 'Out for Delivery')">Out for Delivery</button>
+                <button class="btn btn-track" onclick="updateStatus('<%= orders[i].orderId %>', 'Delivered')">Delivered</button>
+              </div>
+
+              <!-- Order Action Buttons -->
+              <div class="order-actions">
+                <% if (orders[i].status === 'Placed') { %>
+                  <button class="btn btn-danger" onclick="cancelOrder('<%= orders[i].orderId %>')">Cancel Order</button>
+                <% } else if (orders[i].status === 'Delivered') { %>
+                  <button class="btn btn-warning" onclick="returnOrder('<%= orders[i].orderId %>')">Return Order</button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    // Placeholder function to update the order status
+    function updateStatus(orderId, status) {
+      alert('Updating Order ' + orderId + ' to ' + status);
+      // Implement the actual update logic via AJAX call or form submission here
+    }
+
+    // Placeholder function to cancel the order
+    function cancelOrder(orderId) {
+      if (confirm('Are you sure you want to cancel order #' + orderId + '?')) {
+        alert('Order #' + orderId + ' has been canceled.');
+        // Implement order cancellation logic here (e.g., send a request to the server)
+      }
+    }
+
+    // Placeholder function to return the order
+    function returnOrder(orderId) {
+      if (confirm('Are you sure you want to return order #' + orderId + '?')) {
+        alert('Order #' + orderId + ' has been returned.');
+        // Implement order return logic here (e.g., send a request to the server)
+      }
+    }
+  </script>
+
 </body>
 </html>

@@ -21,7 +21,9 @@ const orderSchema = mongoose.Schema({
     
     date:{type:Date},
     totalAmount:{type:Number},
-    status:{type:String}
+    status:{type:String},
+    orderStatus:{type:Number},
+    isReturn:{type:String,default:'false'}
     
 })
 

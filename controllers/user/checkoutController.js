@@ -155,9 +155,22 @@ const viewOrderList = async(req,res)=>{
 
 const viewOrderedProducts = async(req,res)=>{
     const orderId = req.query.id
+    const orderUpdate = await Order.findOne({_id:orderId})
+    //console.log("OrderUpdate:",orderUpdate)
    const products = await Order.findOne({_id:orderId}).populate("products.productId")
-    console.log("Order:",orderId)
-    console.log("Products=",products.products)
-    res.render("user/view-order-products",{products:products.products})
+    //console.log("Order:",orderId)
+    //console.log("Products=",products.products)
+    res.render("user/view-order-products",{products:products.products,order:orderUpdate})
 }
-module.exports = { getCheckoutPage,placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts } 
+
+
+const returnProduct = async (req,res)=>{
+    //const orderId=req.data.orderId
+    //console.log("return orderId =",req.body)
+    const orderId = req.body.orderId
+    const returnProd = await Order.findOneAndUpdate({_id:orderId},{$set:{isReturn:'pending'}})
+    await returnProd.save()
+    console.log("Return =",returnProd)
+    res.json({status:true})
+}
+module.exports = { getCheckoutPage,placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct } 

@@ -6,7 +6,7 @@ const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetP
 const {productDetails} = require("../controllers/user/productController")
 const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
 const { getCartPage,addToCart,changeQuantity,deleteProduct } = require("../controllers/user/cartController")
-const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts } = require("../controllers/user/checkoutController")
+const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct } = require("../controllers/user/checkoutController")
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -85,6 +85,9 @@ router.post("/order-confirmation",orderConfirmation)
 router.post("/verify-payment",verifyPayment)
 router.get("/view-order-list",viewOrderList)
 router.get("/view-orderedproducts",viewOrderedProducts)
+
+//order management
+router.post("/returnProduct",returnProduct)
 
 
 module.exports = router;
