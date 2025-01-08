@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-section {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .left-section, .right-section {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .address-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .address-item input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .address-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            background-color: #3b8b3a;
+            color: white;
+            font-size: 16px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2d7032;
+        }
+
+        .cart-summary, .coupon-section, .payment-section {
+            margin-bottom: 30px;
+        }
+
+        .cart-value p, .total p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .coupon-input, .coupon-dropdown {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .coupon-dropdown {
+            background-color: #fff;
+        }
+
+        .payment-options label {
+            display: block;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .payment-options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .add-new-address {
+            background-color: #00bcd4;
+            color: white;
+            font-size: 16px;
+            padding: 14px;
+            border: none;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-new-address:hover {
+            background-color: #0097a7;
+        }
+
+        .total {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .total p {
+            margin: 0;
+        }
+
+        /* Address Form Styling */
+        .address-form {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-form label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .address-form input, .address-form select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        /* Submit Button Styling for Address Form */
+        .address-form .submit-btn {
+            background-color: #3b8b3a;
+            color: white;
+            font-size: 16px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .address-form .submit-btn:hover {
+            background-color: #2d7032;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .checkout-section {
+                flex-direction: column;
+            }
+
+            .left-section, .right-section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="checkout-section">
+            <!-- Left Section: Address and Add New Address -->
+            <div class="left-section">
+                <div class="address-section">
+                    <h3 class="section-title">Shipping Address</h3>
+                    <!-- Display existing addresses -->
+                    <div class="address-item">
+                        <input type="radio" id="address1" name="address" value="address1">
+                        <label for="address1">John Doe, 123 Street, City, Country, 12345</label>
+                    </div>
+                    <div class="address-item">
+                        <input type="radio" id="address2" name="address" value="address2">
+                        <label for="address2">Jane Smith, 456 Avenue, City, Country, 67890</label>
+                    </div>
+                    <!-- Option to add new address -->
+                    <button class="add-new-address" onclick="toggleAddressForm()">Add New Address</button>
+
+                    <!-- Address Form (Initially hidden) -->
+                    <div class="address-form" id="addressForm">
+                        <h3 class="section-title">Enter New Address</h3>
+                        <label for="addressType">Address Type</label>
+                        <select id="addressType">
+                            <option value="home">Home</option>
+                            <option value="office">Office</option>
+                            <option value="other">Other</option>
+                        </select>
+                        
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                        
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="Enter city name">
+                        
+                        <label for="landmark">Landmark</label>
+                        <input type="text" id="landmark" placeholder="Enter landmark">
+                        
+                        <label for="state">State</label>
+                        <input type="text" id="state" placeholder="Enter state">
+                        
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" placeholder="Enter pincode">
+                        
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter phone number">
+                        
+                        <label for="altPhone">Alternate Phone Number</label>
+                        <input type="tel" id="altPhone" placeholder="Enter alternate phone number">
+
+                        <!-- Submit Button -->
+                        <button class="submit-btn" onclick="submitAddress()">Submit Address</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section: Cart Summary, Coupon, and Payment -->
+            <div class="right-section">
+                <div class="cart-summary">
+                    <h3 class="section-title">Cart Summary</h3>
+                    <div class="cart-value">
+                        <p>Subtotal: <strong>$100.00</strong></p>
+                        <p>Shipping: <strong>$10.00</strong></p>
+                    </div>
+                    <div class="total">
+                        <p>Total: <strong>$110.00</strong></p>
+                    </div>
+                </div>
+
+                <div class="coupon-section">
+                    <h3 class="section-title">Apply Coupon</h3>
+                    <!-- Dropdown for selecting a coupon -->
+                    <div>
+                        <label for="coupon">Already Have a Coupon?</label>
+                        <select id="coupon" class="coupon-dropdown">
+                            <option value="coupon1">SUMMER10 - 10% Off</option>
+                            <option value="coupon2">WINTER15 - 15% Off</option>
+                            <option value="coupon3">BLACKFRIDAY20 - 20% Off</option>
+                        </select>
+                    </div>
+                    <input type="text" class="coupon-input" placeholder="Or enter coupon code manually">
+                    <button class="btn">Apply Coupon</button>
+                </div>
+
+                <div class="payment-section">
+                    <h3 class="section-title">Select Payment Method</h3>
+                    <div class="payment-options">
+                        <label>
+                            <input type="radio" name="payment" value="cod">
+                            Cash on Delivery
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="razorpay">
+                            Razorpay
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="wallet">
+                            Wallet
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Address Form
+        function toggleAddressForm() {
+            var form = document.getElementById('addressForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Submit Address Form
+        function submitAddress() {
+            alert("Your address has been successfully submitted!");
+            // Here you can add further functionality, like sending data to the backend.
+            document.getElementById('addressForm').reset();  // Reset form fields if necessary
+        }
+    </script>
+

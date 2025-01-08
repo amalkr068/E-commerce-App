@@ -52,7 +52,7 @@
                                           <%=product.salePrice%>
                                            </span></td>
                                            <td class="text-center" data-title="Add to Cart">
-                                               <a href="#" onclick="" class="btn btn-sm">Add to Cart</a>
+                                               <a href="#" onclick="addToCart('<%=product._id%>')" class="btn btn-sm">Add to Cart</a>
                                            </td>
                                            <td class="action" data-title="Remove">
                                                <a class="btn btn-sm" href="#" onclick="confirmRemove('<%=product._id%>')">
@@ -96,6 +96,58 @@
             }
         })
     }
+
+
+    function addToCart(productId){
+
+$.ajax({
+  url:'/addToCart',
+  method:'POST',
+  data:{productId:productId},
+  success:(response)=>{
+    //alert(response)
+    if(response.status){
+      window.location.href = `/removeFromWishlist?productId=${productId}`
+      if(response.message == "Product quantity updated in Cart"){
+        Swal.fire({
+        title:"Updated to Cart",
+        text:'The product has been Increased by 1 to your Cart',
+       //text:response.cartLength,
+        icon:'success',
+        timer:2000
+      })
+      }else{
+        Swal.fire({
+        title:"Added to Cart",
+        text:'The product has been added to your Cart',
+       //text:response.cartLength,
+        icon:'success',
+        timer:4000
+      })
+        
+      }
+      
+    }else {
+      Swal.fire({
+        title:"Already in Cart",
+        text:response.message,
+        icon:'info',
+        timer:2000
+      })
+    }  if(response.cartLength) {
+      req.session.cartLength = response.cartLength
+    }
+  },
+  error:(error)=>{
+    Swal.fire({
+      title:'Error',
+      text:"There was an error adding the product to your cart",
+      icon:'error',
+      timer:2000
+    })
+  }
+})
+}
 </script>
 
 

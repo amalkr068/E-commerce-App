@@ -1,4 +1,5 @@
 const Coupon = require("../../model/couponSchema")
+const User = require("../../model/userSchema")
 const mongoose = require("mongoose")
 
 
@@ -6,8 +7,9 @@ const mongoose = require("mongoose")
 const loadCoupon = async (req,res)=>{
     try {
         const findCoupons = await Coupon.find({})
+        const users = await User.find({isAdmin:false})
         
-        return res.render("admin/coupon",{coupons:findCoupons})
+        return res.render("admin/coupon",{coupons:findCoupons,users})
     } catch (error) {
         return res.redirect("/pageerror")
     }
@@ -16,11 +18,12 @@ const loadCoupon = async (req,res)=>{
 
 const createCoupon = async (req,res)=>{
     const {startDate,endDate} = req.body
-    console.log(endDate)
+    
     try {
         const data = {
 
             couponName:req.body.couponName,
+            couponEmail:req.body.couponEmail,
             startDate:new Date(startDate+"T00:00:00"),
             endDate:new Date(endDate+"T00:00:00"),
             offerPrice:parseInt(req.body.offerPrice),
@@ -32,9 +35,10 @@ const createCoupon = async (req,res)=>{
             createdOn:data.startDate,
             expiredOn:data.endDate,
             offerPrice:data.offerPrice,
-            minimumPrice:data.minimumPrice
+            minimumPrice:data.minimumPrice,
+            userEmail:data.couponEmail
         })
-        console.log(newCoupon.expiredOn)
+        //console.log(newCoupon.expiredOn)
         await newCoupon.save()
         return res.redirect("/admin/coupon")
 

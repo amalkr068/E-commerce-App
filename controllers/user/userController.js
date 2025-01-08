@@ -191,6 +191,7 @@ try{
         isBlocked:false,
         category:{$in:categories.map(category=>category._id)},quantity:{$gt:0}
     })
+    const categoryIds = categories.map((category)=>category._id)
 
     productData.sort((a,b)=> new Date(b.createdOn) - new Date(a.createdOn))
     productData = productData.slice(0,4)
@@ -198,14 +199,14 @@ try{
     if(user){
         const userData = await User.findOne({_id:user})
        // console.log("iam amal :",userData)
-        return res.render("user/home",{user:userData , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0})
+        return res.render("user/home",{user:userData , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0,category:categoryIds})
     }else {
-       return res.render("user/home",{user:null , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0})
+       return res.render("user/home",{user:null , products:productData,banner:findBanner || [],totalQuantity: 0, category:categoryIds})
     }
 
    // res.render('user/home')
 } catch (err){
-    console.log("Home page not found")
+    console.log(err)
     res.status(500).send("server Error")
 }
 
@@ -281,7 +282,7 @@ const loadShoppingPage = async(req,res)=>{
         const user = req.session.user
         const userData = await User.findOne({_id:user})
         const categories = await Category.find({isListed:true})
-        const categoryIds = categories.map((category)=>category._id.toString())
+        const categoryIds = categories.map((category)=>category._id)//.tostring()
         const page = parseInt(req.query.page) || 1
         const limit = 9
         const skip = (page-1)*limit
@@ -356,8 +357,11 @@ const filterProduct = async (req,res)=>{
            const currentProduct = findProducts.splice(startIndex,endIndex)
 
            let userData = null
+           userData = await User.findOne({ _id: user });
+
+
            if(user){
-            const searchHistory = {
+            const searchEntry = {
                 category : findCategory ? findCategory._id : null,
                 brand : findBrand ? findBrand._id : null,
                 searchedOn : new Date()
@@ -380,6 +384,7 @@ const filterProduct = async (req,res)=>{
            })
 
     } catch (error) {
+        console.log(error)
         res.redirect("/pageNotFound")
     }
 }

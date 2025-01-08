@@ -1,0 +1,284 @@
+<%- include("../../views/partials/admin/header") %>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-section {
+            width: 48%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .right-section {
+            width: 48%;
+            padding: 20px;
+            background-color: #f4f8fb;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .wallet-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .wallet-header h1 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .wallet-header p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .wallet-form h2 {
+            font-size: 28px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            border-color: #00bcd4;
+        }
+
+        .form-group button {
+            background-color: #00bcd4;
+            color: white;
+            font-size: 16px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .form-group button:hover {
+            background-color: #0097a7;
+        }
+
+        .form-group button:active {
+            background-color: #007c8a;
+        }
+
+        .data-display h2 {
+            font-size: 28px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .data-display table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-display th, .data-display td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .data-display th {
+            background-color: #00bcd4;
+            color: white;
+        }
+
+        .data-display td {
+            background-color: #f9f9f9;
+        }
+
+        .data-display td, .data-display th {
+            border: 1px solid #ddd;
+        }
+
+        .data-display td {
+            text-align: center;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .left-section, .right-section {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Section (Form) -->
+        <div class="left-section">
+            <div class="wallet-header">
+                <h1>Admin Wallet</h1>
+                
+            </div>
+
+            <div class="wallet-form">
+                <h4>Add Amount to Your Wallet</h4>
+                <form id="walletForm">
+                    <!-- Email Dropdown -->
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <select id="email" name="email">
+                            <!-- This will be populated dynamically from the backend -->
+                            <% for (let i = 0; i < users.length; i++) { %>
+                                <option value="<%= users[i].email %>"><%= users[i].email %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <!-- Amount Input -->
+                    <div class="form-group">
+                        <label for="amount">Amount to Add</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter amount">
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="form-group">
+                        <button type="submit">Add Funds</button>
+                    </div>
+                    <!-- Feedback Message -->
+                    <div id="message"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Section (Data Display in Table) -->
+        <div class="right-section">
+            <div class="data-display">
+                <h2>Entered Data</h2>
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Email Address</th>
+                            <th>Amount Added</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be inserted here dynamically -->
+                         <% for(let i=0;i<wallet.length;i++){%>
+                         <tr>
+                         <td><%=wallet[i].userEmail%></td>
+                         <td>₹ <%=wallet[i].amount%></td>
+                         <td><button onclick="deleteWallet('<%=wallet[i]._id%>')" class="btn btn-danger">Delete</button></td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission handling
+        document.getElementById('walletForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            const email = document.getElementById('email').value;
+            const amount = document.getElementById('amount').value;
+
+            // Basic validation
+            if (!email || !amount || amount <= 0) {
+                document.getElementById('message').innerHTML = '<p class="error-message">Please fill out all fields correctly.</p>';
+                return;
+            }
+
+            $.ajax({
+                url:"/admin/addWalletAmount",
+                method:"POST",
+                contentType:"application/json",
+                data:JSON.stringify({
+                    email,
+                    amount
+                }),
+                success:(response)=>{
+                    if(response.status){
+                       window.location.reload();
+                    }
+                }
+            })
+            
+        });
+
+
+        function deleteWallet(walletId){
+            $.ajax({
+                url:"/admin/deleteWallet",
+                method:"POST",
+                
+                data:{walletId},
+                success:(response)=>{
+                    if(response){
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    </script>
+
+<%- include("../../views/partials/admin/footer") %>

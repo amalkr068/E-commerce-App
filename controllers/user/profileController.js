@@ -1,5 +1,6 @@
 const User = require("../../model/userSchema")
 const Address = require("../../model/addressSchema")
+const Wallet = require("../../model/walletSchema")
 const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt")
 const env = require("dotenv").config()
@@ -159,8 +160,10 @@ const userProfile = async (req,res)=>{
     try {
         const userId = req.session.user
         const userData = await User.findById(userId)
+        console.log("Email",userData.email)
         const addressData = await Address.findOne({userId:userId})
-        res.render("user/profile",{user:userData,userAddress:addressData})
+        const walletAmount = await Wallet.findOne({userEmail:userData.email})
+        res.render("user/profile",{user:userData,userAddress:addressData,walletAmount})
 
     } catch (error) {
         console.error("Error for Profile data",error)
@@ -321,9 +324,11 @@ const postAddAddress = async (req,res)=>{
                 address: [{addressType,name,city,landMark,state,pincode,phone,altPhone}]
             })
             await newAddress.save()
+            res.status(200).json({status:true})
         } else {
             userAddress.address.push({addressType,name,city,landMark,state,pincode,phone,altPhone})
             await userAddress.save()
+            res.status(200).json({status:true})
         }
 
         res.redirect("/userProfile")
@@ -334,6 +339,37 @@ const postAddAddress = async (req,res)=>{
         res.redirect("/pageNotFound")
     }
 }
+
+
+const postAddAddress1 = async (req,res)=>{
+    try {
+        const userId = req.session.user
+        const userData = await User.findOne({_id:userId})
+        const {addressType,name,city,landMark,state,pincode,phone,altPhone} = req.body
+
+        const userAddress = await Address.findOne({userId:userData._id})
+        if(!userAddress){
+            const newAddress = new Address({
+                userId:userData._id,
+                address: [{addressType,name,city,landMark,state,pincode,phone,altPhone}]
+            })
+            await newAddress.save()
+            res.status(200).json({status:true})
+        } else {
+            userAddress.address.push({addressType,name,city,landMark,state,pincode,phone,altPhone})
+            await userAddress.save()
+            res.status(200).json({status:true})
+        }
+
+        //res.redirect("/userProfile")
+
+
+    } catch (error) {
+        console.error("Error adding Address :",error)
+        res.redirect("/pageNotFound")
+    }
+}
+
 
 
 const editAddress = async(req,res)=>{
@@ -449,5 +485,6 @@ module.exports = {
     postAddAddress,
     editAddress,
     postEditAddress,
-    deleteAddress
+    deleteAddress,
+    postAddAddress1
 }

@@ -125,6 +125,17 @@
                <div id="error-minimum-price" class="error-message"></div>
              </div>
 
+             <div>
+              <label for="coupon">Email Address of Users</label>
+
+              <select id="email" class="email-dropdown" name="couponEmail">
+                <% for(let i=0;i<users.length;i++){%>
+                  <option value="<%=users[i].email%>" ><%=users[i].email%></option>
+                 
+                  <%}%>
+              </select>
+          </div>
+
 
              <div class="d-grid">
                <button
@@ -149,6 +160,7 @@
                          <th>Expire On</th>
                          <th>Offer Price</th>
                          <th>Minimum Price</th>
+                         <th>Email</th>
                          <th>Status</th>
                          <th>Edit/Delete</th>
                      </tr>
@@ -165,6 +177,7 @@
                       
                          <td class="text-start"><%=coupons[i].offerPrice%></td>
                          <td class="text-start"><%=coupons[i].minimumPrice%></td>
+                         <td class="text-start"><%=coupons[i].userEmail%></td>
                          <td class="text-start"><%=coupons[i].isList%></td>
                          <td class="text-start">
                              <a href="/admin/editCoupon?id=<%=coupons[i]._id%>" class="btn btn-primary btn-sm" >Edit</a>

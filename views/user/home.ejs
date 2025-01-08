@@ -106,6 +106,20 @@
       text-decoration: none;
   }
 
+  .card-container {
+    display: flex;              /* Enables flexbox */
+    justify-content: flex-start; /* Aligns cards from left to right */
+    flex-wrap: wrap;            /* Allows cards to wrap to the next line if there isn't enough space */
+    gap: 15px;                  /* Adds space between the cards */
+}
+
+.card {
+    flex: 1 1 18rem;            /* Ensures each card takes up a minimum of 18rem but can grow/shrink */
+    max-width: 18rem;           /* Limits the maximum width of each card */
+    box-sizing: border-box;     /* Prevents overflow */
+}
+
+
 
 
 
@@ -167,39 +181,55 @@
 
 
 <!-- Product Section -->
-<section class="product spad">
-  <div class="container">
-      <div class="row">
-          <div class="col-lg-12">
-              <ul class="filter__controls">
-                  <li data-filter=".new-arrivals">New Arrivals</li>
-              </ul>
-          </div>
-      </div>
-      <div class="row product__filter">
-          <% for(let i = 0; i < products.length; i++) { %>
-              <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                  <div class="product-cart-wrap mb-30">
-                      <div class="product-img-action-wrap">
-                          <div class="product-img product-img-zoom">
-                              <a href="/productDetails?id=<%= products[i]._id %>">
-                                  <img class="default-img" src="/uploads/re-image/<%= products[i].productImage[0] %>" alt="<%= products[i].productName %>">
-                              </a>
-                          </div>
-                          <a href="/addToWishlist?id=<%= products[i]._id %>" class="wishlist-btn">
-                              <i class="fas fa-heart"></i>
-                          </a>
-                      </div>
-                      <div class="product-content-wrap">
-                          <h6><%= products[i].productName %></h6>
-                          <h5>₹ <%= products[i].salePrice %></h5>
-                          <a href="/addToCart?id=<%= products[i]._id %>">Add to cart</a>
-                      </div>
-                  </div>
-              </div>
-          <% } %>
-      </div>
-  </div>
+<section>
+    <h2 style="text-align: center;">Categories</h2><br>
+    <div class="card-container">
+        
+        <a href="/filter?category=<%=category[3]._id%>">
+        <div class="card" style="width: 18rem;">
+            <img src="https://th.bing.com/th/id/OIP.RnTUn1ifUKInjnOWN70V-AHaHa?w=190&h=190&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">Smart Phone</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="/filter?category=<%=category[2]._id%>">
+        <div class="card" style="width: 18rem;">
+            <img src="https://th.bing.com/th/id/OIP.KRVZJOrWL11ERvL34mpkgQHaHa?w=196&h=196&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">Sandals.</p>
+            </div>
+        </div>
+    </a>
+
+        <a href="/filter?category=<%=category[0]._id%>">
+        <div class="card" style="width: 18rem;">
+            <img src="https://th.bing.com/th/id/OIP.uK8q4q2zzrCdnBsiuyOwmQHaHa?w=198&h=198&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">Watches.</p>
+            </div>
+        </div>
+    </a>
+     <a href="/filter?category=<%=category[4]._id%>">
+        <div class="card" style="width: 18rem;">
+            <img src="https://th.bing.com/th/id/R.175dd2c6e00742b4701a43939f1966aa?rik=%2f23vZNj7eFDQqg&riu=http%3a%2f%2ficons.iconarchive.com%2ficons%2fpaomedia%2fsmall-n-flat%2f1024%2fdevice-laptop-icon.png&ehk=viBPL0Aj4pVxx9dCH9yZOCsTbuIL%2bAcWtw%2fSc9kRCnM%3d&risl=&pid=ImgRaw&r=0" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">Laptop.</p>
+            </div>
+        </div>
+    </a>
+    <a href="/filter?category=<%=category[1]._id%>">
+        <div class="card" style="width: 18rem;">
+            <img src="https://th.bing.com/th/id/OIP.j5JDACzrO0aCcYqx8-qocAHaIb?w=178&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="text-align: center;">Shirts.</p>
+            </div>
+        </div>
+    </a>
+        <!-- Repeat other cards here -->
+        
+    </div>
 </section>
 
 

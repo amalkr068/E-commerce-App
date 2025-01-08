@@ -10,8 +10,7 @@ const orderSchema = mongoose.Schema({
     },
     deliveryDetails:{
         address:{type:String},
-        pincode:{type:String},
-        mobile:{type:String}
+    
     },
     paymentMethod:{type:String},
     products:[{

@@ -2,11 +2,11 @@ const express = require("express")
 const router = express.Router()
 const passport = require('passport')
 const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
-const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress } = require("../controllers/user/profileController")
+const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress,postAddAddress1 } = require("../controllers/user/profileController")
 const {productDetails} = require("../controllers/user/productController")
 const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
 const { getCartPage,addToCart,changeQuantity,deleteProduct } = require("../controllers/user/cartController")
-const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct } = require("../controllers/user/checkoutController")
+const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct,applyCoupon } = require("../controllers/user/checkoutController")
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -56,6 +56,7 @@ router.post("/verify-changepassword-otp",verifyChangePasswordOtp)
 //Address Management
 router.get("/addAddress",addAddress)
 router.post("/addAddress",postAddAddress)
+router.post("/addAddress1",postAddAddress1)
 router.get("/editAddress",editAddress)
 router.post("/editAddress",postEditAddress)
 router.get("/deleteAddress",deleteAddress)
@@ -85,9 +86,12 @@ router.post("/order-confirmation",orderConfirmation)
 router.post("/verify-payment",verifyPayment)
 router.get("/view-order-list",viewOrderList)
 router.get("/view-orderedproducts",viewOrderedProducts)
+router.post("/applyCoupon",applyCoupon)
 
 //order management
 router.post("/returnProduct",returnProduct)
+
+
 
 
 module.exports = router;

@@ -51,6 +51,13 @@ const userSchema = mongoose.Schema({
         type:Boolean,
         //required:true
     },
+    searchHistory: [
+        {
+          category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+          brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brand' },
+          searchedOn: { type: Date, default: Date.now },
+        }
+      ]
 
     
 

@@ -85,7 +85,8 @@ const addToCart = async (req,res)=>{
         items:[{productId:productId,quantity:1}]
       })
       await newCart.save()
-      return res.status(200).json({status:true,message:"Product added to Cart"})
+      totalQuantity = req.session.totalQuantity+1
+      return res.status(200).json({status:true,message:"Product added to Cart",totalQuantity})
    }
 
   
@@ -99,8 +100,8 @@ const addToCart = async (req,res)=>{
       await cartUser.save();
     
       //console.log(existingProduct.salePrice)
-
-      return res.status(200).json({ status: true, message: "Product quantity updated in Cart",newQuantity:existingProduct.quantity});
+      totalQuantity = req.session.totalQuantity+1
+      return res.status(200).json({ status: true, message: "Product quantity updated in Cart",newQuantity:existingProduct.quantity,totalQuantity});
 
      
    } else {
@@ -147,10 +148,11 @@ const changeQuantity = async (req,res)=>{
 
       //console.log(existingProduct.quantity)
       //console.log(existingProduct.salePrice)
-
+//console.log(existingProduct.quantity)
       
-      return res.status(200).json({ status: true, message: "Product quantity updated in Cart" });
-      res.redirect("/cart")
+     // return res.status(200).json({ status: true, message: "Product quantity updated in Cart" ,quantity:existingProduct.quantity});
+     return res.status(200).send({status:true, quantity:existingProduct.quantity})
+      //res.redirect("/cart")
 
     }
 

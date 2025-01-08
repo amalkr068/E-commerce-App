@@ -8,6 +8,7 @@ const { getProductAddPage,addProducts,getAllProducts,addProductOffer,removeProdu
 const { getBannerPage,getAddBannerPage,addBanner,deleteBanner } = require("../controllers/admin/bannerController")
 const { loadCoupon,createCoupon,editCoupon,updateCoupon,deleteCoupon } = require("../controllers/admin/couponController")
 const {orderList,viewOrderedProducts,updateTracking,returnReply} = require("../controllers/admin/orderController")
+const { loadWalletPage,addWalletAmount,deleteWallet } = require("../controllers/admin/walletController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -78,6 +79,11 @@ router.get("/view-orderedproduct",viewOrderedProducts)
 router.post("/updateTracking",updateTracking)
 router.get("/returnReply",returnReply)
 
+
+//Wallet Management
+router.get("/wallet",loadWalletPage)
+router.post("/addWalletAmount",addWalletAmount)
+router.post("/deleteWallet",deleteWallet)
 
 router.get("/pageerror",pageerror)
 

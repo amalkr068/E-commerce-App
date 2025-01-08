@@ -67,7 +67,7 @@
                                                             onclick="changeQuantity('<%=data[i].productId._id%>',1)">+</button>
 
                                                         <input class="quantity-input"
-                                                            id="cartProductQuantity<%= data[i].productId._id %>"
+                                                            id="cartProductQuantity<%=data[i].productId._id%>"
                                                             value="<%= data[i].quantity %>"
                                                             style="width: 45px;" type="text" readonly>
 
@@ -134,6 +134,9 @@
         </div>
     </section>
 </main>
+<!-- jQuery CDN from Google -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
    
@@ -146,9 +149,11 @@
         },
         method: 'POST',
         success: (response) => {
+            console.log(response)
             if (response.status) {
-               
-               location.reload()
+                console.log(response.quantity)
+               document.getElementById(`cartProductQuantity${prodId}`).value = response.quantity
+               //location.reload()
             } else {
                 // If the status is not successful, show an error message
                 Swal.fire({

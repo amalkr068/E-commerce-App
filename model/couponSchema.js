@@ -29,10 +29,10 @@ const couponSchema = mongoose.Schema({
         type:Boolean,
         default:true
     },
-    userId:[{
-        type:mongoose.Schema.Types.ObjectId,
+    userEmail:{
+        type:String,
         ref:"User"
-    }]
+    }
     
 })
 

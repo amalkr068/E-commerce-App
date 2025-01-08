@@ -302,7 +302,7 @@
                </div>
 
 
-               <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+              <!-- <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
                  <div class="card">
                    <div class="card-header">
                      <h5 class="mb-0">Wallet</h5>
@@ -310,18 +310,41 @@
                    <div class="card-body contact-from-area">
                      <div class="row">
                        <div class="col-lg-8 mx-auto text-center mt-90">
-                         <form>
-                           <div class="form-group">
+                         
+                           <div class="
                              <label for="walletAmount" class="h4">Amount</label>
                              <div class="h3"></div>
                            </div>
-                           <button type="button" class="btn btn-success" onclick="">Add Money</button>
-                         </form>
+                           <h1>₹ <%=walletAmount.amount%></h1>
+                         
                        </div>
                      </div>
                    </div>
                  </div>
-               </div>
+               </div> -->
+
+               <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Wallet</h5>
+                    </div>
+                    <div class="card-body contact-from-area">
+                        <div class="row">
+                            <!-- Centered Column for Wallet Amount Display -->
+                            <div class="col-lg-8 mx-auto text-center mt-4">
+                                <!-- Amount Section -->
+                                <div class="mb-4">
+                                    <label for="walletAmount" class="h4">Amount</label>
+                                    <div class="h3"></div>
+                                </div>
+                                <!-- Displaying the Wallet Amount -->
+                                <h1 class="text-primary">₹ <%= walletAmount.amount %></h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
 
 
                <div class="tab-pane fade" id="wallet-history" role="tabpanel" aria-labelledby="orders-tab">

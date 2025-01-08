@@ -1,6 +1,9 @@
 const Cart = require("../../model/cartSchema")
 const User = require("../../model/userSchema")
 const Order = require("../../model/orderSchema")
+const Coupon = require("../../model/couponSchema")
+const Address = require("../../model/addressSchema")
+const Wallet = require("../../model/walletSchema")
 const Razorpay = require('razorpay')
 const env = require('dotenv').config()
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils')
@@ -14,18 +17,32 @@ var instance = new Razorpay({
 
 
 
-const getCheckoutPage = (req,res)=>{
+const getCheckoutPage = async(req,res)=>{
    
     let totalAmount = req.session.totalAmount
+    const userId = req.session.user
+    const user = await User.findOne({_id:userId})
+    const coupons = await Coupon.find({userEmail:user.email})
+    const address = await Address.findOne({userId:userId})
+   // console.log("Addresses:",address)
+    //console.log("Coupons:",coupons)
+
     //console.log(totalAmount)
-    res.render("user/checkout",{totalAmount})
+    res.render("user/checkout",{totalAmount,coupons,address})
 }
 
 
 const placeOrder = async (req,res)=>{
-    let totalAmount = req.session.totalAmount
+   // let totalAmount = req.session.totalAmount
+   const { address,paymentMethod,totalAmount } = req.body
+   const user = await User.findOne({_id:req.session.user})
+  // console.log("Adress:",address)
+   console.log("payment Method:",paymentMethod)
+   //console.log("totalAmount:",totalAmount)
+
     let amountinpaisa= totalAmount*100
-     let status = req.body.payment === 'cod'? 'placed':'pending'
+     let status = paymentMethod === 'cod'? 'placed':'pending'
+   // let status = paymentMethod === 'cod'? 'placed':'pending'
     //console.log(req.body)
     const cartProducts = await Cart.findOne({userId:req.session.user})
     //console.log("Cart products=",cartProducts)
@@ -47,11 +64,9 @@ const placeOrder = async (req,res)=>{
 
         userId:req.session.user,
         deliveryDetails:{
-            address:req.body.address,
-            pincode:req.body.pincode,
-            mobile:req.body.mobile
+            address:address
         },
-        paymentMethod:req.body.payment,
+        paymentMethod:paymentMethod,
         
         products:products,
             
@@ -66,9 +81,9 @@ const placeOrder = async (req,res)=>{
    //console.log("Order IId :",newOrder._id)
     await Cart.deleteOne({userId:req.session.user})
     //return res.render("user/order-placed",{totalAmount,totalQuantity})
-    if(req.body.payment === 'cod'){
+    if(paymentMethod === 'cod'){
         return res.status(200).json({success:true})
-    }else{
+    }else if(paymentMethod === 'razorpay'){
         
         var options = {
             amount:newOrder.totalAmount*100,
@@ -84,6 +99,28 @@ const placeOrder = async (req,res)=>{
         })
 
        
+    }else if(paymentMethod === 'wallet') {
+        const userEmail = user.email
+        const wallet = await Wallet.findOne({userEmail:userEmail})
+
+        if (!wallet || wallet.amount < totalAmount) {
+            return res.status(400).json({ error: 'Insufficient wallet balance' });
+        }
+
+        wallet.amount -= totalAmount;
+        await wallet.save();
+        const updatedOrder = await Order.findOneAndUpdate(
+            { _id: ord },
+            { $set: { status: 'Placed' } },
+            { new: true }  // This will return the updated document
+        );
+
+
+
+        return res.status(200).json({ victory: true, message: 'Order placed and wallet deducted' });
+        
+
+
     }
    
     
@@ -149,8 +186,9 @@ const verifyPayment = async(req,res)=>{
 const viewOrderList = async(req,res)=>{
     const userId = req.session.user
     const orders =await Order.find({userId:userId})
-    console.log("Order=",orders)
-    res.render("user/order-list",{orders:orders})
+    const reverseOrders = orders.reverse()
+    //console.log("Order=",orders)
+    res.render("user/order-list",{orders:reverseOrders})
 }
 
 const viewOrderedProducts = async(req,res)=>{
@@ -173,4 +211,35 @@ const returnProduct = async (req,res)=>{
     console.log("Return =",returnProd)
     res.json({status:true})
 }
-module.exports = { getCheckoutPage,placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct } 
+
+const applyCoupon = async (req,res)=>{
+
+    const {couponValue} = req.body
+    //console.log("Coupon Value:",couponValue)
+    let totalAmount = parseInt(req.session.totalAmount)
+    let offerPrice = 0
+    const coupon = await Coupon.findOne({name:couponValue})
+    if(coupon){
+         offerPrice = parseInt(coupon.offerPrice)
+        console.log(coupon)
+        
+        totalAmount = totalAmount-offerPrice
+        res.status(200).json({status:true,totalAmount,offerPrice})
+
+    }else {
+        res.json({status:true,totalAmount,offerPrice})
+    }
+   
+    //req.session.totalAmount = totalAmount
+
+   
+
+
+
+
+}
+
+
+
+
+module.exports = { getCheckoutPage,placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct,applyCoupon } 
