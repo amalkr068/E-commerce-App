@@ -6,7 +6,13 @@ const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetP
 const {productDetails} = require("../controllers/user/productController")
 const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
 const { getCartPage,addToCart,changeQuantity,deleteProduct } = require("../controllers/user/cartController")
-const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct,applyCoupon } = require("../controllers/user/checkoutController")
+const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct,applyCoupon,downloadInvoice,addReview } = require("../controllers/user/checkoutController")
+const multer = require("multer")
+const storage = require("../helpers/multer")
+const uploads = multer({storage:storage})
+
+
+
 
 //Error Management
 router.get("/pageNotFound",pageNotFound)
@@ -87,6 +93,12 @@ router.post("/verify-payment",verifyPayment)
 router.get("/view-order-list",viewOrderList)
 router.get("/view-orderedproducts",viewOrderedProducts)
 router.post("/applyCoupon",applyCoupon)
+router.get("/downloadInvoice",downloadInvoice)
+router.post("/addReview",uploads.single("image"),addReview)
+
+
+
+
 
 //order management
 router.post("/returnProduct",returnProduct)

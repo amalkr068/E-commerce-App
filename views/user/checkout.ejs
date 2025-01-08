@@ -423,6 +423,8 @@ console.log("Amount:",totalAmount)
             alert("Payment successful using wallet!");
             window.location.href = '/order-confirmation';
 
+      } else if(response.status===false){
+        alert(response.message)
       }
     }
 

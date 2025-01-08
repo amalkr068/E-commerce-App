@@ -1,4 +1,112 @@
 <%- include("../../views/partials/user/header") %>
+<style>
+  /* Container for all reviews */
+.reviews-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Individual review card */
+.review-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px); /* Slight hover effect */
+}
+
+/* Review Header */
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  color: #ff9800;
+}
+
+.star.filled {
+  font-size: 16px;
+}
+
+.star.empty {
+  font-size: 16px;
+  color: #ddd;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #888;
+  margin-left: 10px;
+}
+
+/* Review text */
+.review-text {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* Review Image */
+.review-images {
+  margin-top: 10px;
+}
+
+.review-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.review-image:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+</style>
+
 <main class="main">
  <div class="page-header breadcrumb-wrap">
      <div class="container">
@@ -106,13 +214,62 @@
                                      <li>Availability:<span class="in-stock text-success ml-5"><%=quantity%> Items in stock</span></li>
                                  </ul>
                              </div>
+                             <br><br>
+                            
+                            
                          </div>
+                         
                      </div>
+                    
                     
                  </div>
              </div>
          </div>
      </div>
+
+
+
+    
+     <div class="reviews-section">
+      <h2 class="section-title">Customer Reviews</h2>
+      <%if(reviewUsers.length>0){%>
+
+      <!-- Sample Review Card -->
+
+      <%for(let j=0;j<reviewUsers.length;j++){%>
+      <div class="review-card">
+        <div class="review-header">
+          <img class="avatar" src="https://th.bing.com/th/id/OIP.EwG6x9w6RngqsKrPJYxULAHaHa?rs=1&pid=ImgDetMain" alt="User Avatar" />
+          <div class="user-info">
+            <h4 class="username"><%=reviewUsers[j].userId.fullName%></h4>
+            <div class="rating">
+              <!-- Stars Rating -->
+              <div class="stars">
+                <i class="star filled">★</i>
+                <i class="star filled">★</i>
+                <i class="star filled">★</i>
+                <i class="star filled">★</i>
+                <i class="star empty">★</i>
+              </div>
+              <span class="review-date">Reviewed on 2025-01-07</span>
+            </div>
+          </div>
+        </div>
+        <p class="review-text"><%=reviewUsers[j].reviewText%></p>
+    
+        <!-- Review Images (Optional) -->
+        <div class="review-images">
+          <img class="review-image" src="/uploads/re-image/<%=reviewUsers[j].image%>" alt="Review Image 1" />
+        </div>
+      </div>
+<%}%>
+      <%}else{%>
+        <p style="text-align: center;">No Customer Reviews.......!!!!</p>
+      <%}%>
+    </div>
+   
+    
+    
  </section>
 </main>
 
