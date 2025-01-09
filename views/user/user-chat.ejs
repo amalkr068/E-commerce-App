@@ -1,0 +1,238 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Admin</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Chat with Admin</h1>
+  <div id="messages"></div>
+  <input type="text" id="message" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+   const userId = "<%=user.toString()%>";
+   const socket = io();
+
+   
+   console.log("Id:",userId)
+
+// Connect the user to the chat when the help button is clicked (on the chat page)
+socket.emit('join_chat', userId); // Use dynamic userId here based on logged-in user
+
+
+
+// Listen for messages from the admin
+socket.on('receive_message', (data) => {
+  const messageDiv = document.createElement('div');
+  messageDiv.textContent = `${data.userId}: ${data.message}`;
+  document.getElementById('messages').appendChild(messageDiv);
+});
+
+
+
+ // Fetch the chat history from the server and display it
+ socket.emit('get_chat_history', userId);
+
+socket.on('chat_history', (messages) => {
+  messages.forEach((message) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = `${message.senderId}: ${message.message}`;
+    document.getElementById('messages').appendChild(messageDiv);
+  });
+})
+
+
+
+function sendMessage() {
+  const message = document.getElementById('message').value;
+  socket.emit('send_message', { userId: userId, message }); // Send message to the admin
+}
+
+// Close the socket connection when the user leaves the help page
+window.onbeforeunload = () => {
+  socket.disconnect();
+};
+
+
+
+  </script>
+</body>
+</html>
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    /* Custom Chat Styles */
+    body {
+      background-color: #f5f5f5;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .chat-container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .chat-box {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      max-height: 350px;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+    }
+
+    .message .sender {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .message .text {
+      background-color: #e5e5e5;
+      border-radius: 15px;
+      padding: 10px;
+      max-width: 70%;
+      margin-left: 10px;
+      font-size: 14px;
+    }
+
+    .message .text.admin {
+      background-color: #d1ffd6;
+      text-align: right;
+      margin-left: 0;
+      margin-right: 10px;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-group input {
+      flex-grow: 1;
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    .input-group button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .input-group button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h3>Chat with Men Fashion</h3>
+      <span>User: <%= user.toString() %></span>
+    </div>
+    <div id="messages" class="chat-box">
+      <!-- Messages will be dynamically inserted here -->
+    </div>
+    <div class="input-group">
+      <input type="text" id="message" placeholder="Type your message" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const userId = "<%= user.toString() %>";
+    const socket = io();
+
+    console.log("User ID:", userId);
+
+    // Connect the user to the chat when the help button is clicked
+    socket.emit('join_chat', userId); // Use dynamic userId here based on logged-in user
+
+    // Listen for messages from the admin
+    socket.on('receive_message', (data) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message');
+      messageDiv.innerHTML = `<span class="sender">${data.userId}:</span> <span class="text">${data.message}</span>`;
+      document.getElementById('messages').appendChild(messageDiv);
+      scrollToBottom();
+    });
+
+    // Fetch the chat history from the server and display it
+    socket.emit('get_chat_history', userId);
+
+    socket.on('chat_history', (messages) => {
+      messages.forEach((message) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.innerHTML = `
+          <span class="sender">${message.senderId}:</span>
+          <span class="text ${message.senderId === 'admin' ? 'admin' : ''}">${message.message}</span>
+        `;
+        document.getElementById('messages').appendChild(messageDiv);
+      });
+      scrollToBottom();
+    });
+
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      if (message.trim()) {
+        socket.emit('send_message', { userId: userId, message });
+        document.getElementById('message').value = ''; // Clear the input field
+      }
+    }
+
+    function scrollToBottom() {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Close the socket connection when the user leaves the help page
+    window.onbeforeunload = () => {
+      socket.disconnect();
+    };
+  </script>
+</body>
+</html>

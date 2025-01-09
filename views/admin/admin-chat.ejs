@@ -1,0 +1,371 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Chat</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Admin Chat</h1>
+
+  <h3>Active Users</h3>
+  <ul id="activeUsers">
+    <!-- Dynamically populated list of users 
+    <% users.forEach(user => { %>
+      <li><button onclick="selectUser('<%= user._id %>')"><%= user.fullName %></button></li>
+    <% }) %>
+  </ul>
+
+
+
+  <div id="messages"></div>
+  <input type="text" id="adminMessage" placeholder="Reply to user">
+  <button onclick="sendAdminMessage()">Send</button>
+
+  <script>
+   // const userId = 
+    const socket = io();
+
+    // Admin joins a special 'admin' room
+    socket.emit('join_chat', 'admin');
+
+    // Listen for messages from users
+    socket.on('receive_message', (data) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = `${data.userId}: ${data.message}`;
+      document.getElementById('messages').appendChild(messageDiv);
+    });
+
+    function sendAdminMessage(userId) {
+      const message = document.getElementById('adminMessage').value;
+      socket.emit('admin_send_message', { userId: userId, message }); // Send message to user
+    }
+
+    // Close the socket connection when admin leaves the page
+    window.onbeforeunload = () => {
+      socket.disconnect();
+    };
+  </script>
+</body>
+</html>-->
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Users</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Chat with Users</h1>
+
+  <!-- Active Users List 
+  <h3>Active Users</h3>
+  <ul id="activeUsers">
+    <!-- Dynamically populated list of users 
+    <% users.forEach(user => { %>
+      <li><button onclick="selectUser('<%= user.email %>')"><%= user.email %></button></li>
+    <% }) %>
+  </ul>
+
+  <div id="messages"></div>
+  <input type="text" id="message" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    const socket = io();
+    let selectedUserId = null;
+
+    // Admin joins the chat
+    const adminId = "admin";  // Static identifier for the admin
+    socket.emit('join_chat', adminId);
+
+    // Listen for messages from users
+    socket.on('receive_message', (data) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = `${data.userId}: ${data.message}`;
+      document.getElementById('messages').appendChild(messageDiv);
+    });
+
+    // Fetch the chat history for admin
+    socket.emit('get_chat_history', adminId);
+
+    socket.on('chat_history', (messages) => {
+      messages.forEach((message) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = `${message.senderId}: ${message.message}`;
+        document.getElementById('messages').appendChild(messageDiv);
+      });
+    });
+
+    // Allow the admin to select a user to chat with
+    function selectUser(userId) {
+      selectedUserId = userId;
+      alert("Selected user: " + userId);  // You can replace this with better UI feedback
+    }
+
+    // Send message to the selected user
+    function sendMessage() {
+      if (selectedUserId) {
+        const message = document.getElementById('message').value;
+        socket.emit('admin_send_message', { userId: selectedUserId, message });
+        document.getElementById('message').value = '';  // Clear input
+      } else {
+        alert("Please select a user to chat with.");
+      }
+    }
+
+    // Disconnect when the admin leaves the page
+    window.onbeforeunload = () => {
+      socket.disconnect();
+    };
+  </script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Chat</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 36px;
+      margin-top: 20px;
+    }
+
+    h3 {
+      font-size: 18px;
+      color: #34495e;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 90vh;
+      padding: 10px;
+    }
+
+    .chat-box {
+      width: 70%;
+      height: 60%;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #ecf0f1;
+    }
+
+    .message.user {
+      background-color: #2980b9;
+      color: #fff;
+      align-self: flex-start;
+    }
+
+    .message.admin {
+      background-color: #27ae60;
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    .message .text {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 5px;
+      word-wrap: break-word;
+    }
+
+    #activeUsers {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    #activeUsers li {
+      background-color: #3498db;
+      color: white;
+      margin: 5px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+    }
+
+    #activeUsers li:hover {
+      background-color: #2980b9;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 12px;
+      border: 2px solid #3498db;
+      border-radius: 20px;
+      font-size: 16px;
+      outline: none;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.6);
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      background-color: #3498db;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Scrollbar Styling */
+    .chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background-color: #bdc3c7;
+      border-radius: 10px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb:hover {
+      background-color: #7f8c8d;
+    }
+
+    .user-message {
+      text-align: left;
+    }
+
+    .admin-message {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Chat with Users</h1>
+
+    <!-- Active Users List -->
+    <h3>Active Users</h3>
+    <ul id="activeUsers">
+      <!-- Dynamically populated list of users -->
+      <% users.forEach(user => { %>
+        <li onclick="selectUser('<%= user.email %>')"><%= user.email %></li>
+      <% }) %>
+    </ul>
+
+    <div class="chat-box" id="messages"></div>
+
+    <div>
+      <input type="text" id="message" placeholder="Type your message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    let selectedUserId = null;
+
+    // Admin joins the chat
+    const adminId = "admin";  // Static identifier for the admin
+    socket.emit('join_chat', adminId);
+
+    // Listen for messages from users
+    socket.on('receive_message', (data) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', 'user');
+      messageDiv.innerHTML = `<div class="text"><strong>${data.userId}:</strong> ${data.message}</div>`;
+      document.getElementById('messages').appendChild(messageDiv);
+      scrollToBottom();
+    });
+
+    // Fetch the chat history for admin
+    socket.emit('get_chat_history', adminId);
+
+    socket.on('chat_history', (messages) => {
+      messages.forEach((message) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', message.senderId === 'admin' ? 'admin' : 'user');
+        messageDiv.innerHTML = `
+          <div class="text">
+            <strong>${message.senderId}:</strong> ${message.message}
+          </div>`;
+        document.getElementById('messages').appendChild(messageDiv);
+      });
+      scrollToBottom();
+    });
+
+    // Allow the admin to select a user to chat with
+    function selectUser(userId) {
+      selectedUserId = userId;
+      alert("Selected user: " + userId);  // Can be replaced with better UI feedback
+    }
+
+    // Send message to the selected user
+    function sendMessage() {
+      if (selectedUserId) {
+        const message = document.getElementById('message').value;
+        if (message.trim()) {
+          socket.emit('admin_send_message', { userId: selectedUserId, message });
+          document.getElementById('message').value = '';  // Clear input
+        }
+      } else {
+        alert("Please select a user to chat with.");
+      }
+    }
+
+    // Scroll to the bottom to view the latest message
+    function scrollToBottom() {
+      const messagesDiv = document.getElementById('messages');
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Disconnect when the admin leaves the page
+    window.onbeforeunload = () => {
+      socket.disconnect();
+    };
+  </script>
+
+</body>
+</html>
+
+

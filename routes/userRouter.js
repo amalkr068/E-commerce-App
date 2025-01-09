@@ -7,6 +7,7 @@ const {productDetails} = require("../controllers/user/productController")
 const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
 const { getCartPage,addToCart,changeQuantity,deleteProduct } = require("../controllers/user/cartController")
 const { getCheckoutPage, placeOrder,orderConfirmation,verifyPayment,viewOrderList,viewOrderedProducts,returnProduct,applyCoupon,downloadInvoice,addReview } = require("../controllers/user/checkoutController")
+const { getUserHelp } = require("../controllers/user/chatController")
 const multer = require("multer")
 const storage = require("../helpers/multer")
 const uploads = multer({storage:storage})
@@ -102,6 +103,10 @@ router.post("/addReview",uploads.single("image"),addReview)
 
 //order management
 router.post("/returnProduct",returnProduct)
+
+
+//Chat Management
+router.get("/help",getUserHelp)
 
 
 

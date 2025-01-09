@@ -7,6 +7,8 @@ const { connectDB } = require('./config/db')
 const  userRouter  = require('./routes/userRouter')
 const adminRouter = require("./routes/adminRouter")
 const passport = require("./config/passport")
+const http = require('http');  // Import HTTP to create server
+const { io } = require('./controllers/user/socket');
 
 
 
@@ -62,10 +64,16 @@ app.use("/admin",adminRouter)
 
 
 
+// Create the HTTP server
+const server = http.createServer(app); // Pass express app to http server
+// Pass the server to Socket.IO
+io.attach(server);
+
+
 
 
     connectDB().then(()=>{
-        app.listen(process.env.PORT || 3002 ,()=>{
+        server.listen(process.env.PORT || 3002 ,()=>{
             console.log(`Server started in ${process.env.PORT}`)
         })
     })
@@ -73,7 +81,7 @@ app.use("/admin",adminRouter)
         console.log("Error",err.message)
     })
 
-
+module.exports = { app }
 
 
 
