@@ -21,78 +21,79 @@ const uploads = multer({storage:storage})
 
 
 
+
 // Log in Management
 router.get("/login",loadLogin)
 router.post("/login",login)
 router.get("/",adminAuth,loadDashBoard)
-router.get("/logout",logout)
+router.get("/logout",adminAuth,logout)
 
 // Customer Management
-router.get("/users", customerInfo)
-router.get("/blockCustomer", customerBlocked)
-router.get("/unblockCustomer", customerUnblocked)
+router.get("/users",adminAuth, customerInfo)
+router.get("/blockCustomer",adminAuth, customerBlocked)
+router.get("/unblockCustomer",adminAuth, customerUnblocked)
 
 //category Management
-router.get("/category",categoryInfo)
-router.post("/addCategory",addCategory)
-router.post("/addCategoryOffer",addCategoryOffer)
-router.post("/removeCategoryOffer",removeCategoryOffer)
-router.get("/listCategory",getListCategory)
-router.get("/unlistCategory",getUnListCategory)
-router.get("/editCategory",getEditCategory)
-router.post("/editCategory/:id",editCategory)
+router.get("/category",adminAuth,categoryInfo)
+router.post("/addCategory",adminAuth,addCategory)
+router.post("/addCategoryOffer",adminAuth,addCategoryOffer)
+router.post("/removeCategoryOffer",adminAuth,removeCategoryOffer)
+router.get("/listCategory",adminAuth,getListCategory)
+router.get("/unlistCategory",adminAuth,getUnListCategory)
+router.get("/editCategory",adminAuth,getEditCategory)
+router.post("/editCategory/:id",adminAuth,editCategory)
 
 //Brand Management
-router.get("/brands",getBrandPage)
-router.post("/addBrand",uploads.single("image"),addBrand)
-router.get("/blockBrand",blockBrand)
-router.get("/unBlockBrand",unBlockBrand)
-router.get("/deleteBrand",deleteBrand)
+router.get("/brands",adminAuth,getBrandPage)
+router.post("/addBrand",adminAuth,uploads.single("image"),addBrand)
+router.get("/blockBrand",adminAuth,blockBrand)
+router.get("/unBlockBrand",adminAuth,unBlockBrand)
+router.get("/deleteBrand",adminAuth,deleteBrand)
 
 
 //Product Management
-router.get("/addProducts",getProductAddPage)
-router.post("/addProducts",uploads.array("images",4),addProducts)
-router.get("/products",getAllProducts)
-router.post("/addProductOffer",addProductOffer)
-router.post("/removeProductOffer",removeProductOffer)
-router.get("/blockProduct",blockProduct)
-router.get("/unblockProduct",unblockProduct)
-router.get("/editProduct",getEditProduct)
-router.post("/editProduct/:id",uploads.array("images",4),editProduct)
-router.post("/deleteImage",deleteSingleImage)
+router.get("/addProducts",adminAuth,getProductAddPage)
+router.post("/addProducts",adminAuth,uploads.array("images",4),addProducts)
+router.get("/products",adminAuth,getAllProducts)
+router.post("/addProductOffer",adminAuth,addProductOffer)
+router.post("/removeProductOffer",adminAuth,removeProductOffer)
+router.get("/blockProduct",adminAuth,blockProduct)
+router.get("/unblockProduct",adminAuth,unblockProduct)
+router.get("/editProduct",adminAuth,getEditProduct)
+router.post("/editProduct/:id",adminAuth,uploads.array("images",4),editProduct)
+router.post("/deleteImage",adminAuth,deleteSingleImage)
 
 //Banner Management
-router.get("/banner",getBannerPage)
-router.get("/addBanner",getAddBannerPage)
-router.post("/addBanner",uploads.single("images"),addBanner)
-router.get("/deleteBanner",deleteBanner)
+router.get("/banner",adminAuth,getBannerPage)
+router.get("/addBanner",adminAuth,getAddBannerPage)
+router.post("/addBanner",adminAuth,uploads.single("images"),addBanner)
+router.get("/deleteBanner",adminAuth,deleteBanner)
 
 //Coupon Management
-router.get("/coupon",loadCoupon)
-router.post("/createCoupon",createCoupon)
-router.get("/editCoupon",editCoupon)
-router.post("/updatecoupon",updateCoupon)
-router.get("/deletecoupon",deleteCoupon)
+router.get("/coupon",adminAuth,loadCoupon)
+router.post("/createCoupon",adminAuth,createCoupon)
+router.get("/editCoupon",adminAuth,editCoupon)
+router.post("/updatecoupon",adminAuth,updateCoupon)
+router.get("/deletecoupon",adminAuth,deleteCoupon)
 
 //Order Management
-router.get("/orderList",orderList)
-router.get("/view-orderedproduct",viewOrderedProducts)
-router.post("/updateTracking",updateTracking)
-router.get("/returnReply",returnReply)
+router.get("/orderList",adminAuth,orderList)
+router.get("/view-orderedproduct",adminAuth,viewOrderedProducts)
+router.post("/updateTracking",adminAuth,updateTracking)
+router.get("/returnReply",adminAuth,returnReply)
 
 
 //Wallet Management
-router.get("/wallet",loadWalletPage)
-router.post("/addWalletAmount",addWalletAmount)
-router.post("/deleteWallet",deleteWallet)
+router.get("/wallet",adminAuth,loadWalletPage)
+router.post("/addWalletAmount",adminAuth,addWalletAmount)
+router.post("/deleteWallet",adminAuth,deleteWallet)
 
 
 //Chat Management
-router.get("/help",getAdminHelp)
+router.get("/help",adminAuth,getAdminHelp)
 
 //Dashboard Management
-router.get("/dashboard",getDashboard)
+router.get("/dashboard",adminAuth,getDashboard)
 
 
 
