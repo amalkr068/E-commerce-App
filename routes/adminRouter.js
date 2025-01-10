@@ -10,6 +10,7 @@ const { loadCoupon,createCoupon,editCoupon,updateCoupon,deleteCoupon } = require
 const {orderList,viewOrderedProducts,updateTracking,returnReply} = require("../controllers/admin/orderController")
 const { loadWalletPage,addWalletAmount,deleteWallet } = require("../controllers/admin/walletController")
 const { getAdminHelp } = require("../controllers/user/chatController")
+const { getDashboard } = require("../controllers/admin/dashboardController")
 const { adminAuth } = require("../middlewares/auth")
 const multer = require("multer")
 const storage = require("../helpers/multer")
@@ -89,6 +90,9 @@ router.post("/deleteWallet",deleteWallet)
 
 //Chat Management
 router.get("/help",getAdminHelp)
+
+//Dashboard Management
+router.get("/dashboard",getDashboard)
 
 
 

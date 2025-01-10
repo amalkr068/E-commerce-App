@@ -1,0 +1,305 @@
+<%- include("../../views/partials/admin/header") %>
+<style>
+  /* Container Styling */
+  .chart-container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Styling for buttons container */
+  .chart-types {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  /* General button styling */
+  .chart-button {
+    background-color: #4e73df;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Button hover effect */
+  .chart-button:hover {
+    transform: translateY(-3px); /* Slightly raise the button */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Increase shadow */
+  }
+
+  /* Specific button colors with gradient */
+  .chart-button.bar {
+    background: linear-gradient(45deg, #4e73df, #2e59d9);
+  }
+
+  .chart-button.line {
+    background: linear-gradient(45deg, #1cc88a, #17a673);
+  }
+
+  .chart-button.doughnut {
+    background: linear-gradient(45deg, #36b9cc, #2c9faf);
+  }
+
+  .chart-button.polarArea {
+    background: linear-gradient(45deg, #f6c23e, #e0a900);
+  }
+
+  .chart-button.radar {
+    background: linear-gradient(45deg, #e74a3b, #c0392b);
+  }
+
+  /* Hover effects with corresponding gradient changes */
+  .chart-button.bar:hover {
+    background: linear-gradient(45deg, #2e59d9, #4e73df);
+  }
+
+  .chart-button.line:hover {
+    background: linear-gradient(45deg, #17a673, #1cc88a);
+  }
+
+  .chart-button.doughnut:hover {
+    background: linear-gradient(45deg, #2c9faf, #36b9cc);
+  }
+
+  .chart-button.polarArea:hover {
+    background: linear-gradient(45deg, #e0a900, #f6c23e);
+  }
+
+  .chart-button.radar:hover {
+    background: linear-gradient(45deg, #c0392b, #e74a3b);
+  }
+
+  /* Responsive adjustments for buttons */
+  @media (max-width: 768px) {
+    .chart-types {
+      flex-direction: column;
+    }
+    
+    .chart-button {
+      margin: 10px 0;
+      width: 80%; /* Full width on smaller screens */
+    }
+  }
+
+
+
+  <!--hi-->
+  
+  /* Chart Container Styling */
+  .chart-container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+  }
+
+  /* Chart container background */
+  .chart-container {
+    background: #f8f9fc;
+    background-image: linear-gradient(135deg, #f8f9fc, #ffffff);
+  }
+
+  /* Title or heading of the chart */
+  .chart-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4e73df;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Styling the chart area (canvas) */
+  canvas {
+    width: 100% !important;
+    height: 400px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Add a subtle border around the chart canvas */
+  .chart-container canvas {
+    border: 1px solid #e3e6f0;
+  }
+
+  /* Chart Hover Effect */
+  .chart-container canvas:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Tooltip styling */
+  .chartjs-tooltip {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Styling chart labels */
+  .chartjs-legend {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #6e7dff;
+  }
+
+  .chartjs-legend li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 600;
+  }
+
+  /* Tooltip appearance when hovering over chart elements */
+  .chartjs-tooltip .tooltip-inner {
+    background-color: #4e73df;
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .chart-container {
+      width: 90%;
+      margin: 20px auto;
+    }
+    
+    .chart-title {
+      font-size: 22px;
+    }
+
+    canvas {
+      height: 350px;
+    }
+  }
+
+
+
+</style>
+
+<div>
+  <div class="chart-types">
+<button onclick="setChartType('bar')" class="chart-button">Bars</button>
+<button onclick="setChartType('line')" class="chart-button">Line</button>
+<button onclick="setChartType('doughnut')" class="chart-button">Doughnut</button>
+<button onclick="setChartType('polarArea')" class="chart-button">PolarArea</button>
+<button onclick="setChartType('radar')" class="chart-button">Radar</button>
+  </div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+<script>
+
+  let myChart;
+  const ctx = document.getElementById('myChart');
+
+  //const results = JSON.parse('<%= data %>');
+  //const results =  JSON.parse('<%=data%>');
+  //const results = '<%=data%>'
+  //const results = '<%- JSON.stringify(data) %>';
+  const results = JSON.parse('<%- JSON.stringify(data) %>');
+
+  console.log(typeof(results))
+
+console.log("Results=",results)
+
+
+function setChartType(chartType){
+
+  myChart.destroy()
+  createChart(results,chartType)
+}
+
+function createChart(data,type) {
+
+  if (!Array.isArray(data)) {
+    console.error("Expected an array, but got:", data);
+    return;
+  }
+
+    // Extract labels (dates) and total amounts for each day
+    const labels = data.map(item => item._id); // Date in 'YYYY-MM-DD' format
+    const totalAmounts = data.map(item => item.totalAmountForDay); // Total amount for each day
+
+    console.log("Labels =",labels)
+
+     // Set chart colors based on type
+     let chartOptions = {
+      label: 'Total Amount',
+      data: totalAmounts,
+      borderWidth: 1,
+    };
+
+    // Colors for different chart types
+    if (type === 'bar') {
+      chartOptions.backgroundColor = '#4e73df'; // Blue for bars
+      chartOptions.borderColor = '#2e59d9'; // Darker blue for borders
+      chartOptions.hoverBackgroundColor = '#2e59d9'; // Darker blue for hover effect
+    } else if (type === 'line') {
+      chartOptions.borderColor = '#1cc88a'; // Green for the line
+      chartOptions.backgroundColor = 'rgba(28, 200, 138, 0.2)'; // Light green fill
+      chartOptions.hoverBackgroundColor = '#17a673'; // Darker green for hover effect
+    } else if (type === 'doughnut') {
+      chartOptions.backgroundColor = ['#36b9cc', '#f6c23e', '#e74a3b']; // Color for segments
+    } else if (type === 'polarArea') {
+      chartOptions.backgroundColor = ['#4e73df', '#1cc88a', '#36b9cc']; // Colors for sections
+    } else if (type === 'radar') {
+      chartOptions.backgroundColor = 'rgba(231, 74, 59, 0.2)'; // Red for radar fill
+      chartOptions.borderColor = '#e74a3b'; // Red for radar border
+    }
+
+
+    myChart = new Chart(ctx, {
+    type: type,
+    data: {
+      labels: labels,
+      datasets: [chartOptions]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      
+
+    }
+  });
+
+}
+
+
+createChart(results,'bar');
+</script>
+
+
+

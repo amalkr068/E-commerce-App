@@ -14,9 +14,16 @@ const User = require("../../model/userSchema")
 const getUserHelp = async(req,res)=>{
 
     const userId = req.session.user
+    if(userId){
+
+    
     const userfind = await User.findOne({_id:userId})
     //console.log("User =",user)
     res.render("user/user-chat",{user:userfind.email})
+
+    }else {
+      res.redirect("/login")
+    }
 }
 
 //const user = req.session.user

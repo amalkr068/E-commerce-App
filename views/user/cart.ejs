@@ -112,8 +112,10 @@
                                     <tr>
                                         <td class="cart_total_label">Total</td>
                                         <%if(Total){%>
-                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">₹
-                                                <text id="total"><%= Total%></text>
+                                        <td class="cart_total_amount"><span class="font-lg fw-900 text-brand" id="total-amount">₹
+                                                <!--<text id="total"> <%= Total.toLocaleString('en-IN') %></text>-->
+                                                <text id="total"> <%= Total %></text>
+                                                
                                             </span></td>
                                             <%}%>
                                     </tr>
@@ -140,6 +142,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
    
+//document.getElementById("cart-badge").textContent = "<%=totalQuantity%>"
+
    function changeQuantity(prodId, count) {
     $.ajax({
         url: "/changeQuantity",  // Your endpoint
@@ -153,6 +157,9 @@
             if (response.status) {
                 console.log(response.quantity)
                document.getElementById(`cartProductQuantity${prodId}`).value = response.quantity
+               document.getElementById("cart-badge").textContent = response.totalQuantity
+               document.getElementById("total-amount").innerHTML ='₹'+ response.totalAmount.toLocaleString('en-IN')
+               //$('#total').text('₹' + response.totalAmount.toLocaleString('en-IN'));
                //location.reload()
             } else {
                 // If the status is not successful, show an error message

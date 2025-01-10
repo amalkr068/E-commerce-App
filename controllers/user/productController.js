@@ -2,6 +2,8 @@ const Product = require("../../model/productSchema")
 const Category = require("../../model/categorySchema")
 const User = require("../../model/userSchema")
 const Review = require("../../model/reviewSchema")
+const { getCartAndWishlistData } = require("../../controllers/user/cartController")
+
 
 
 
@@ -10,6 +12,7 @@ const Review = require("../../model/reviewSchema")
 const productDetails = async (req,res)=>{
     try {
         const userId = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(userId);
         const userData = await User.findById(userId)
         const productId = req.query.id
         const reviews = await Review.find({productId:productId})
@@ -27,8 +30,10 @@ const productDetails = async (req,res)=>{
             quantity:product.quantity,
             totalOffer:totalOffer,
             category:findCategory,
-            totalQuantity:req.session.totalQuantity,
-            reviewUsers:reviewUsers
+            totalQuantity:cartTotalQuantity,
+            reviewUsers:reviewUsers,
+            wishlistCount
+
         })
 
 

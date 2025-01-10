@@ -5,6 +5,7 @@ const Brand = require("../../model/brandSchema")
 const Banner = require("../../model/bannerSchema")
 const nodeMailer = require("nodemailer")
 const bcrypt = require("bcrypt")
+const { getCartAndWishlistData } = require("../../controllers/user/cartController")
 
 
 const pageNotFound = (req,res)=>{
@@ -186,6 +187,8 @@ try{
         endDate:{$gt:new Date(today)}
     })
     const user = req.session.user
+    const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(user);
+    console.log("Hi=",cartTotalQuantity)
     const categories = await Category.find({isListed:true})
     let productData = await Product.find({
         isBlocked:false,
@@ -199,9 +202,9 @@ try{
     if(user){
         const userData = await User.findOne({_id:user})
        // console.log("iam amal :",userData)
-        return res.render("user/home",{user:userData , products:productData,banner:findBanner || [],totalQuantity:req.session.totalQuantity || 0,category:categoryIds})
+        return res.render("user/home",{user:userData , products:productData,banner:findBanner || [],totalQuantity:cartTotalQuantity,category:categoryIds,total:cartTotalAmount,wishlistCount})
     }else {
-       return res.render("user/home",{user:null , products:productData,banner:findBanner || [],totalQuantity: 0, category:categoryIds})
+       return res.render("user/home",{user:null , products:productData,banner:findBanner || [],totalQuantity: 0, category:categoryIds,total:0,wishlistCount:0})
     }
 
    // res.render('user/home')
@@ -280,6 +283,7 @@ const loadShoppingPage = async(req,res)=>{
     try {
 
         const user = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(user);
         const userData = await User.findOne({_id:user})
         const categories = await Category.find({isListed:true})
         const categoryIds = categories.map((category)=>category._id)//.tostring()
@@ -311,7 +315,8 @@ const loadShoppingPage = async(req,res)=>{
             totalProducts:totalProducts,
             currentPage:page,
             totalPages:totalPages,
-            totalQuantity:req.session.totalQuantity
+            totalQuantity:cartTotalQuantity,
+            wishlistCount
         })
     } catch (error) {
         res.redirect("/pageNotFound")
@@ -324,6 +329,7 @@ const filterProduct = async (req,res)=>{
     try {
         
         const user = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(user);
         const category = req.query.category
         const brand = req.query.brand
         const findCategory = category ? await Category.findOne({_id:category}) : null
@@ -380,7 +386,8 @@ const filterProduct = async (req,res)=>{
             currentPage,
             selectedCategory:category || null,
             selectedBrand:brand || null,
-            totalQuantity:req.session.totalQuantity
+            totalQuantity:cartTotalQuantity,
+            wishlistCount
            })
 
     } catch (error) {
@@ -393,6 +400,7 @@ const filterProduct = async (req,res)=>{
 const filterByPrice = async (req,res)=>{
     try {
         const user = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(user);
         const userData =await User.findOne({_id:user})
         const brands = await Brand.find({}).lean()
         const categories = await Category.find({isListed:true}).lean()
@@ -420,7 +428,8 @@ const filterByPrice = async (req,res)=>{
             brand:brands,
             totalPages,
             currentPage,
-            totalQuantity:req.session.totalQuantity
+            totalQuantity:cartTotalQuantity,
+            wishlistCount
         })
 
 
@@ -436,6 +445,7 @@ const searchProducts = async (req,res)=>{
      try {
         
         const user = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(user);
         const userData = await User.findOne({_id:user})
         let search = req.body.query
 
@@ -475,7 +485,8 @@ const searchProducts = async (req,res)=>{
             totalPages,
             currentPage,
             count:searchResult.length,
-            totalQuantity:req.session.totalQuantity
+            totalQuantity:cartTotalQuantity,
+            wishlistCount
         })
 
 
@@ -488,4 +499,14 @@ const searchProducts = async (req,res)=>{
 }
 
 
-module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts }
+
+const getContactPage = (req,res)=>{
+    res.render("user/contact")
+}
+
+const getAboutPage = (req,res)=>{
+    res.render("user/about")
+}
+
+
+module.exports = { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts,getContactPage,getAboutPage }

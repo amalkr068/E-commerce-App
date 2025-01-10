@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const passport = require('passport')
-const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts } = require("../controllers/user/userController")
+const { loadHomepage,pageNotFound,loadSignupPage,signup,verifyOtp,resendOtp,loadLoginPage,login,logOut,loadShoppingPage,filterProduct,filterByPrice,searchProducts,getContactPage,getAboutPage } = require("../controllers/user/userController")
 const { getForgotPasswordPage,forgotEmailValid,verifyForgotPasswordOtp,getResetPasswordPage,resendOtp1,postNewPassword,userProfile,changeEmail,changeEmailValid,verifyEmailOtp,updateEmail,changePassword,changePasswordValid,verifyChangePasswordOtp,addAddress,postAddAddress,editAddress,postEditAddress,deleteAddress,postAddAddress1 } = require("../controllers/user/profileController")
 const {productDetails} = require("../controllers/user/productController")
 const { loadwishlist,addToWishlist,removeProduct, removeFromWishlist } = require("../controllers/user/wishlistController")
@@ -107,6 +107,9 @@ router.post("/returnProduct",returnProduct)
 
 //Chat Management
 router.get("/help",getUserHelp)
+
+router.get("/contact",getContactPage)
+router.get("/about",getAboutPage)
 
 
 

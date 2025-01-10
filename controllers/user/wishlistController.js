@@ -2,6 +2,7 @@ const Wishlist = require("../../model/wishlistSchema")
 const User = require("../../model/userSchema")
 const Product = require("../../model/productSchema")
 const mongoose = require("mongoose")
+const { getCartAndWishlistData } = require("../../controllers/user/cartController")
 
 
 
@@ -10,18 +11,20 @@ const mongoose = require("mongoose")
 const loadwishlist = async (req,res)=>{
     try {
         const userId = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(userId);
         //const findWishlist = await Wishlist.findOne({userId:userId})
         const user = await User.findById(userId)
         //const products = await Wishlist.find({userId:userId}).populate("productId")
         const wishlist = await Wishlist.findOne({ userId: userId }).populate('productId');
 
         if(!wishlist){
-            res.render("user/wishlist",{user,wishlist:0})
+            res.render("user/wishlist",{user,wishlist:0,wishlistCount:0})
         }else {
             res.render("user/wishlist",{
                 user,
                wishlist:wishlist.productId ,
-               totalQuantity:req.session.totalQuantity
+               totalQuantity:cartTotalQuantity,
+               wishlistCount
             })
         }
         //console.log(wishlist.productId)

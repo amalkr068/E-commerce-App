@@ -358,6 +358,7 @@ $.ajax({
     //alert(response)
     if(response.status){
       
+      document.getElementById("cart-badge").textContent =response.totalQuantity
       if(response.message == "Product quantity updated in Cart"){
         Swal.fire({
         title:"Updated to Cart",
@@ -366,6 +367,7 @@ $.ajax({
         icon:'success',
         timer:2000
       })
+      //document.getElementById("cart-badge").textContent =response.totalQuantity
       }else{
         Swal.fire({
         title:"Added to Cart",
@@ -374,6 +376,7 @@ $.ajax({
         icon:'success',
         timer:2000
       })
+     // document.getElementById("cart-badge").textContent =response.totalQuantity
       }
       
     }else {
@@ -383,6 +386,7 @@ $.ajax({
         icon:'info',
         timer:2000
       })
+      //document.getElementById("cart-badge").textContent =  response.totalQuantity
     }  if(response.cartLength) {
       req.session.cartLength = response.cartLength
     }
