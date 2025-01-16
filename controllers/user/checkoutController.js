@@ -13,6 +13,8 @@ const fs = require("fs")
 const env = require('dotenv').config()
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils')
 const mongoose = require('mongoose')
+const { getCartAndWishlistData } = require("../../controllers/user/cartController")
+
 
 
 var instance = new Razorpay({
@@ -24,8 +26,9 @@ var instance = new Razorpay({
 
 const getCheckoutPage = async(req,res)=>{
    
-    let totalAmount = req.session.totalAmount
+    //let totalAmount = req.session.totalAmount
     const userId = req.session.user
+    const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(userId);
     const user = await User.findOne({_id:userId})
     const coupons = await Coupon.find({userEmail:user.email})
     const address = await Address.findOne({userId:userId})
@@ -33,7 +36,7 @@ const getCheckoutPage = async(req,res)=>{
     //console.log("Coupons:",coupons)
 
     //console.log(totalAmount)
-    res.render("user/checkout",{totalAmount,coupons,address})
+    res.render("user/checkout",{totalAmount:cartTotalAmount,coupons,address})
 }
 
 

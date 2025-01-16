@@ -18,7 +18,7 @@ const loadwishlist = async (req,res)=>{
         const wishlist = await Wishlist.findOne({ userId: userId }).populate('productId');
 
         if(!wishlist){
-            res.render("user/wishlist",{user,wishlist:0,wishlistCount:0})
+            res.render("user/wishlist",{user,wishlist:0,wishlistCount:0,totalQuantity:0})
         }else {
             res.render("user/wishlist",{
                 user,
