@@ -5,6 +5,8 @@ const nodemailer = require("nodemailer")
 const bcrypt = require("bcrypt")
 const env = require("dotenv").config()
 const session = require("express-session")
+const { getCartAndWishlistData } = require("../../controllers/user/cartController")
+
 
 
 function generateOtp (){
@@ -159,11 +161,13 @@ const postNewPassword = async (req,res)=>{
 const userProfile = async (req,res)=>{
     try {
         const userId = req.session.user
+        const { cartTotalQuantity, cartTotalAmount, wishlistCount } = await getCartAndWishlistData(userId);
         const userData = await User.findById(userId)
         console.log("Email",userData.email)
         const addressData = await Address.findOne({userId:userId})
         const walletAmount = await Wallet.findOne({userEmail:userData.email})
-        res.render("user/profile",{user:userData,userAddress:addressData,walletAmount})
+        res.render("user/profile",{user:userData,userAddress:addressData,walletAmount,totalQuantity:cartTotalQuantity,
+            wishlistCount})
 
     } catch (error) {
         console.error("Error for Profile data",error)
